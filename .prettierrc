@@ -1,0 +1,31 @@
+{
+  "semi": false,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "proseWrap": "always",
+  "tabWidth": 2,
+  "printWidth": 120,
+  "importOrder": [
+    "^api/(.*)$",
+    "^constants/(.*)$",
+    "^types/(.*)$",
+    "^data/(.*)$",
+    "^exceptions/(.*)$",
+    "^mock/(.*)$",
+    "^libs/(.*)$",
+    "^hooks/(.*)$",
+    "^services((/(.*))||())$",
+    "^stores((/(.*))||())$",
+    "^utils/(.*)$",
+    "^views/pages/(.*)$",
+    "^views/core/(.*)$",
+    "^views/common/(.*)$",
+    "^views/svgs/(.*)$",
+    "^themes/(.*)$",
+    "^contracts/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderCaseInsensitive": false
+}
