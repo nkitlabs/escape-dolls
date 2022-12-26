@@ -1,8 +1,10 @@
 import { Box, Button, Input, Stack, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
+
 import { base64ToBinary, decryptWithSalt, getDecryptedDataFromFile, getHash } from 'utils/cryptography'
 import { METADATA_FILE_PREFIX_REGEX } from 'utils/regex'
 import { downloadData } from 'utils/utils'
+
 import { ContentWrapper, StyledTextInput } from 'views/pages/Encryption/components'
 
 export const DecryptData = () => {

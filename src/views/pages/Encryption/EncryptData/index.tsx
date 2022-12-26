@@ -1,10 +1,11 @@
 import { Box, Button, Input, Stack, Typography } from '@mui/material'
-import { ContentWrapper, StyledTextInput } from 'views/pages/Encryption/components'
+import { isString } from 'lodash'
+import { ChangeEvent, useState } from 'react'
 
 import { encryptWithSalt, getHash, randomIv } from 'utils/cryptography'
-import { ChangeEvent, useState } from 'react'
-import { isString } from 'lodash'
 import { downloadData } from 'utils/utils'
+
+import { ContentWrapper, StyledTextInput } from 'views/pages/Encryption/components'
 
 export const EncryptData = () => {
   const [inputData, setInputData] = useState<undefined | string>(undefined)

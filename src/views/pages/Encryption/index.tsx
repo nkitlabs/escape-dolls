@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material'
-import { EncryptData } from 'views/pages/Encryption/EncryptData'
+
 import { DecryptData } from 'views/pages/Encryption/DecryptData'
+import { EncryptData } from 'views/pages/Encryption/EncryptData'
 
 export const EncryptionPage = () => {
   return (

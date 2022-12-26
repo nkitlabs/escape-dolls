@@ -1,5 +1,5 @@
-import { METADATA_FILE_PREFIX_REGEX } from 'utils/regex'
 import { base64ToBinary } from 'utils/cryptography'
+import { METADATA_FILE_PREFIX_REGEX } from 'utils/regex'
 
 /**
  * export the given data into a local

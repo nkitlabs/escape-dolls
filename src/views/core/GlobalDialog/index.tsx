@@ -1,7 +1,7 @@
-import { isString } from 'lodash'
-import { observer } from 'mobx-react-lite'
 import { Close as CloseIcon } from '@mui/icons-material'
 import { Divider, Typography } from '@mui/material'
+import { isString } from 'lodash'
+import { observer } from 'mobx-react-lite'
 
 import { dialogStore } from 'stores/dialogStore'
 
