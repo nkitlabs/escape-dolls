@@ -1,9 +1,1 @@
-import { Typography } from '@mui/material'
-
-export default function Home() {
-  return (
-    <>
-      <Typography>Hi</Typography>
-    </>
-  )
-}
+export { LandingPage as default } from 'views/pages/Landing'
