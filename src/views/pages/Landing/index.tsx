@@ -1,13 +1,17 @@
 import { Box, Stack, Typography } from '@mui/material'
+import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
+
+import { timerStore } from 'stores/timerStore'
 
 import { CoreEscapeGame } from 'views/core/CoreEscapeGame'
 
 import { PlayButton, StyledButton } from './components'
 
-export const LandingPage = () => {
+export const LandingPage = observer(() => {
   const [playing, setPlaying] = useState(false)
   const onClickPlay = () => {
+    timerStore.resetTimer()
     setPlaying(true)
   }
   return playing ? (
@@ -28,4 +32,4 @@ export const LandingPage = () => {
       </Stack>
     </Stack>
   )
-}
+})

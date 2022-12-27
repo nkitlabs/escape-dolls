@@ -1,12 +1,17 @@
 import { Stack, Typography } from '@mui/material'
+import { observer } from 'mobx-react-lite'
 
 import { useBreakpoints } from 'hooks/useBreakpoints'
+
+import { timerStore } from 'stores/timerStore'
+
+import { displayTimer } from 'utils/utils'
 
 import { GameDialog } from 'views/core/CoreEscapeGame/GameDialog'
 import { ObservableItems } from 'views/core/CoreEscapeGame/ObservableItems'
 import { SearchItem } from 'views/core/CoreEscapeGame/SearchItem'
 
-export const CoreEscapeGame = () => {
+export const CoreEscapeGame = observer(() => {
   const { downMd, downSm } = useBreakpoints()
 
   if (downSm) {
@@ -15,7 +20,7 @@ export const CoreEscapeGame = () => {
         <Stack gap={1}>
           <Typography variant="body1">Objective: Escape the locked room.</Typography>
           <Typography variant="body2" color="text.secondary">
-            Time used: 10.38
+            {displayTimer(timerStore.timer)}
           </Typography>
         </Stack>
         <Stack mx="auto">
@@ -35,7 +40,7 @@ export const CoreEscapeGame = () => {
         <Stack direction="row" gap={4}>
           <Stack justifyContent="center" gap={2}>
             <Typography variant="body1" color="text.secondary">
-              Time used: 10.38
+              {displayTimer(timerStore.timer)}
             </Typography>
             <img src="/static/escape-dolls-room.png" width={240} style={{ borderRadius: 16 }} />
           </Stack>
@@ -57,7 +62,7 @@ export const CoreEscapeGame = () => {
           <Stack>
             <Typography variant="h6">Objective: Escape the locked room.</Typography>
             <Typography variant="body1" color="text.secondary">
-              Time used: 10.38
+              {displayTimer(timerStore.timer)}
             </Typography>
           </Stack>
           <SearchItem />
@@ -67,4 +72,4 @@ export const CoreEscapeGame = () => {
       </Stack>
     </Stack>
   )
-}
+})

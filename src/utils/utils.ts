@@ -30,3 +30,32 @@ export const downloadData = (data: string, filename?: string): void => {
   link.href = url
   link.click()
 }
+
+/**
+ * display time with formatter.
+ * @param timer actual timer.
+ * @param timeLimit timeLimit of the game.
+ * @returns a string represents a time used/left.
+ */
+export const displayTimer = (timer: number, timeLimit: number = 3600): string => {
+  if (timer <= timeLimit) {
+    const left = timeLimit - timer
+    const hrLeft = Math.floor(left / 3600)
+    const minLeft = Math.floor((left % 3600) / 60)
+      .toString()
+      .padStart(2, '0')
+    const secLeft = (left % 60).toString().padStart(2, '0')
+    if (left >= 3600) return `Time left: ${hrLeft}:${minLeft}:${secLeft} h`
+    else if (left >= 60) return `Time left: ${minLeft}:${secLeft} min`
+    else return `Time left: ${secLeft} sec`
+  }
+
+  const hrUsed = Math.floor(timer / 3600)
+  const minUsed = Math.floor((timer % 3600) / 60)
+    .toString()
+    .padStart(2, '0')
+  const secUsed = (timer % 60).toString().padStart(2, '0')
+  if (timer >= 3600) return `Time used: ${hrUsed}:${minUsed}:${secUsed} h`
+  else if (timer >= 60) return `Time used: ${minUsed}:${secUsed} min`
+  else return `Time used: ${secUsed} sec`
+}
