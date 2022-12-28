@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx'
 import { StoryInfo } from 'types/types'
 
 export class GameStore {
-  public dialogs: string[]
+  public dialogs: string[][]
   constructor() {
     this.dialogs = []
     makeAutoObservable(this)
@@ -12,7 +12,7 @@ export class GameStore {
   public addNewStory = (info: StoryInfo) => {
     console.log('!!! add new Story')
     if (info.dialogs) {
-      this.dialogs.push(info.dialogs.join('\n\n'))
+      this.dialogs.push(info.dialogs)
     }
   }
 }

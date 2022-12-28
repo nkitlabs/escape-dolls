@@ -44,12 +44,12 @@ class DataLoaderService {
     const newKey = key.trim().replace('^(the |a |an )', '').trim()
     const mappedKey = KeywordMapping[newKey] ?? newKey
 
-    const hashedMappingKey = getHash(mappedKey.concat(this.salt))
-    if (!StoryMapping[hashedMappingKey]) {
+    const filename = getHash(mappedKey.concat(this.salt))
+    if (!StoryMapping[filename]) {
       return ''
     }
 
-    const { filename, iv } = StoryMapping[hashedMappingKey]
+    const { iv } = StoryMapping[filename]
     const hashedKey = getHash(key)
     const { data } = await axios.get(`data/${filename}.txt`)
     const result = decryptWithSalt(Buffer.from(data, 'base64'), hashedKey, iv).toString('binary')
