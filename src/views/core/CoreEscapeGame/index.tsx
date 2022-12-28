@@ -18,7 +18,7 @@ export const CoreEscapeGame = observer(() => {
     return (
       <Stack px={4} py={4} my="auto" gap={2}>
         <Stack gap={1}>
-          <Typography variant="body1">Objective: Escape the locked room.</Typography>
+          <Typography variant="body1">Objective: Escape from the locked room.</Typography>
           <Typography variant="body2" color="text.secondary">
             {displayTimer(timerStore.timer)}
           </Typography>
@@ -36,7 +36,7 @@ export const CoreEscapeGame = observer(() => {
   if (downMd) {
     return (
       <Stack px={4} py={4} gap={2} my="auto">
-        <Typography variant="h6">Objective: Escape the locked room.</Typography>
+        <Typography variant="h6">Objective: Escape from the locked room.</Typography>
         <Stack direction="row" gap={4}>
           <Stack justifyContent="center" gap={2}>
             <Typography variant="body1" color="text.secondary">
@@ -60,7 +60,7 @@ export const CoreEscapeGame = observer(() => {
         <img src="/static/escape-dolls-room.png" width={600} style={{ borderRadius: 16 }} />
         <Stack gap={4} width="100%" maxWidth={700}>
           <Stack>
-            <Typography variant="h6">Objective: Escape the locked room.</Typography>
+            <Typography variant="h6">Objective: Escape from the locked room.</Typography>
             <Typography variant="body1" color="text.secondary">
               {displayTimer(timerStore.timer)}
             </Typography>
