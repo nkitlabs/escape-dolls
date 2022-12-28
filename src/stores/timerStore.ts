@@ -28,6 +28,10 @@ export class TimerStore {
     }, 1000)
   }
 
+  public addTimer(n: number) {
+    this._timer += n
+  }
+
   public get timer() {
     return this._timer
   }

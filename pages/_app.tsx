@@ -9,6 +9,7 @@ import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
+import { SnackbarProvider } from 'notistack'
 
 import { GlobalDialog } from 'views/core/GlobalDialog'
 
@@ -48,11 +49,13 @@ const CustomApp = ({ Component, emotionCache = clientSideEmotionCache, pageProps
           <MaterialThemeProvider theme={theme}>
             <EmotionThemeProvider theme={theme}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <CssBaseline />
-                <GlobalDialog />
-                <Root>
-                  <Component {...pageProps} />
-                </Root>
+                <SnackbarProvider hideIconVariant={true}>
+                  <CssBaseline />
+                  <GlobalDialog />
+                  <Root>
+                    <Component {...pageProps} />
+                  </Root>
+                </SnackbarProvider>
               </LocalizationProvider>
             </EmotionThemeProvider>
           </MaterialThemeProvider>

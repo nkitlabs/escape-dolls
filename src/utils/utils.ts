@@ -1,3 +1,5 @@
+import { TIME_LIMIT } from 'types/constants'
+
 import { base64ToBinary } from 'utils/cryptography'
 import { METADATA_FILE_PREFIX_REGEX } from 'utils/regex'
 
@@ -37,7 +39,7 @@ export const downloadData = (data: string, filename?: string): void => {
  * @param timeLimit timeLimit of the game.
  * @returns a string represents a time used/left.
  */
-export const displayTimer = (timer: number, timeLimit: number = 3600): string => {
+export const displayTimer = (timer: number, timeLimit: number = TIME_LIMIT): string => {
   if (timer <= timeLimit) {
     const left = timeLimit - timer
     const hrLeft = Math.floor(left / 3600)

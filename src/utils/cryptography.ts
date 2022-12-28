@@ -7,18 +7,20 @@ import { METADATA_FILE_PREFIX_REGEX } from 'utils/regex'
 // https://www.geeksforgeeks.org/node-js-crypto-createhash-method/
 const ENCRYPT_ALGO = 'aes-256-ctr'
 
-export const encryptWithSalt = (data: BinaryLike, key: string, iv: BinaryLike) => {
+export const encryptWithSalt = (data: BinaryLike, hexKey: string, iv: BinaryLike) => {
+  const key = Buffer.from(hexKey, 'hex')
   const cipher = createCipheriv(ENCRYPT_ALGO, key, iv)
   return Buffer.concat([cipher.update(data), cipher.final()])
 }
 
-export const decryptWithSalt = (data: NodeJS.ArrayBufferView, key: string, iv: BinaryLike) => {
+export const decryptWithSalt = (data: NodeJS.ArrayBufferView, hexKey: string, iv: BinaryLike) => {
+  const key = Buffer.from(hexKey, 'hex')
   const cipher = createDecipheriv(ENCRYPT_ALGO, key, iv)
   return Buffer.concat([cipher.update(data), cipher.final()])
 }
 
 export const getHash = (key: string) => {
-  return createHash('sha256').update(key).digest().toString('ascii')
+  return createHash('sha256').update(key).digest().toString('hex')
 }
 
 export const randomIv = (n: number = 8) => {

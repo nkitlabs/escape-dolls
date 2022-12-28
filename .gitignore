@@ -5,7 +5,10 @@
 /.pnp
 .pnp.js
 
-data/draft
+public/data/draft
+
+src/data
+public/data
 
 # testing
 /coverage

@@ -10,6 +10,10 @@ export const SearchButton = styled(Button)(({ theme }) => ({
   '&:hover': {
     background: theme.palette.primary.main,
   },
+  '&.Mui-disabled': {
+    opacity: 0.5,
+    color: theme.palette.text.primary,
+  },
 }))
 
 export const SearchTextField = styled(TextField)(({ theme }) => ({
