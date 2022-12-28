@@ -5,10 +5,11 @@ import { useState } from 'react'
 
 import { TIME_LIMIT } from 'types/constants'
 
-import { dataLoaderService } from 'services/dataLoaderService'
+import { gameService } from 'services/gameService'
 
-import { gameStore } from 'stores/gameStore'
 import { timerStore } from 'stores/timerStore'
+
+import { openNewItemModal } from 'views/core/CoreEscapeGame/NewItemModal'
 
 import { SearchButton, SearchTextField } from './components'
 
@@ -21,24 +22,29 @@ export const SearchItem = observer(() => {
       return
     }
     setIsLoading(true)
-    const result = await dataLoaderService.getStoryInfo(item)
+    const result = await gameService.updateNewObject(`${item}-search`)
 
     if (!result.success) {
       setIsLoading(false)
-      timerStore.addTimer(10)
-      enqueueSnackbar(
-        `he doesn't see ${item} in this room. Penalty ${timerStore.timer > TIME_LIMIT ? '+' : '-'}10 second`,
-        {
-          variant: 'error',
-          autoHideDuration: 3000,
-          anchorOrigin: { vertical: 'top', horizontal: 'center' },
-        },
-      )
+
+      if (!result.isInteralError) {
+        timerStore.addTimer(10)
+      }
+      const errMsg = result.isInteralError
+        ? `something went wrong. Please contact an admin`
+        : `he doesn't see ${item} in this room. Penalty ${timerStore.timer > TIME_LIMIT ? '+' : '-'}10 second`
+      enqueueSnackbar(errMsg, {
+        variant: 'error',
+        autoHideDuration: 3000,
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+      })
       return
     }
 
-    gameStore.addNewStory(result.data)
     setIsLoading(false)
+    openNewItemModal({
+      newItems: result.data,
+    })
   }
 
   return (

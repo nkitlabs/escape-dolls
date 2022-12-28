@@ -5,9 +5,8 @@ import { useState } from 'react'
 
 import { START_GAME_KEY } from 'types/constants'
 
-import { dataLoaderService } from 'services/dataLoaderService'
+import { gameService } from 'services/gameService'
 
-import { gameStore } from 'stores/gameStore'
 import { timerStore } from 'stores/timerStore'
 
 import { CoreEscapeGame } from 'views/core/CoreEscapeGame'
@@ -18,9 +17,8 @@ export const LandingPage = observer(() => {
   const [playing, setPlaying] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const onClickPlay = async () => {
-    const result = await dataLoaderService.getStoryInfo(START_GAME_KEY)
+    const result = await gameService.updateNewObject(START_GAME_KEY)
     if (result.success) {
-      gameStore.addNewStory(result.data)
       timerStore.resetTimer()
       setPlaying(true)
     } else {

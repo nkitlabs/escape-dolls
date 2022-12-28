@@ -14,8 +14,8 @@ export const EncryptData = () => {
   const [generatedIV, setGeneratedIV] = useState('')
 
   const onInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const imgFile = e.target?.files?.[0]
-    if (!imgFile) {
+    const file = e.target?.files?.[0]
+    if (!file) {
       setInputData(undefined)
       return
     }
@@ -29,7 +29,7 @@ export const EncryptData = () => {
       newData = Buffer.from(reader.result).toString('base64')
       setInputData(newData)
     }
-    reader.readAsDataURL(imgFile)
+    reader.readAsDataURL(file)
   }
 
   const onExportEncryptedData = () => {

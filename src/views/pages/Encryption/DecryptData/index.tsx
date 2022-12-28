@@ -2,7 +2,7 @@ import { Box, Button, Input, Stack, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 
 import { base64ToBinary, decryptWithSalt, getDecryptedDataFromFile, getHash } from 'utils/cryptography'
-import { METADATA_FILE_PREFIX_REGEX } from 'utils/regex'
+import { REGEX_METADATA_FILE_PREFIX } from 'utils/regex'
 import { downloadData } from 'utils/utils'
 
 import { ContentWrapper, StyledTextInput } from 'views/pages/Encryption/components'
@@ -82,7 +82,7 @@ export const DecryptData = () => {
           {decryptedData.startsWith('data:image') ? (
             <img src={decryptedData} width={'250px'} />
           ) : (
-            <Typography>{base64ToBinary(decryptedData.replace(METADATA_FILE_PREFIX_REGEX, ''))}</Typography>
+            <Typography>{base64ToBinary(decryptedData.replace(REGEX_METADATA_FILE_PREFIX, ''))}</Typography>
           )}
         </Stack>
       )}

@@ -115,6 +115,23 @@ theme.components = {
     },
   },
   MuiTypography: {},
+  MuiButton: {
+    styleOverrides: {
+      root: {
+        background: theme.palette.primary.dark,
+        color: theme.palette.text.primary,
+        borderRadius: 8,
+        '&:hover': {
+          background: theme.palette.primary.main,
+        },
+        textTransform: 'none',
+        '&.Mui-disabled': {
+          opacity: 0.5,
+          color: theme.palette.text.primary,
+        },
+      },
+    },
+  },
 }
 
 export { theme }

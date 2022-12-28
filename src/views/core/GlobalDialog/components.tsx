@@ -1,18 +1,19 @@
 import { Dialog, DialogContent, IconButton, styled } from '@mui/material'
 
 export const StyledDialog = styled(Dialog, {
-  shouldForwardProp: (props: string) => !['backgroundColor', 'borderRadius'].includes(props),
+  shouldForwardProp: (props: string) => !['backgroundColor', 'borderRadius', 'width'].includes(props),
 })<{
   backgroundColor?: string
   borderRadius?: number
 }>(({ theme, backgroundColor, borderRadius }) => ({
   zIndex: 1500,
   '.MuiDialog-paper': {
+    width: 'unset',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing(0),
-    backgroundColor: backgroundColor ?? theme.palette.background.default,
+    backgroundColor: backgroundColor ?? theme.palette.primary.lighten,
     borderRadius: borderRadius,
     [theme.breakpoints.down('xs')]: {
       minWidth: 0,
