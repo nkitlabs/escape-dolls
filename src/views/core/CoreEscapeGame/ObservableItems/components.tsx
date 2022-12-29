@@ -1,4 +1,4 @@
-import { Button, styled } from '@mui/material'
+import { Button, Stack, styled } from '@mui/material'
 
 export const StyledButton = styled(Button)(({ theme }) => ({
   width: 160,
@@ -15,5 +15,23 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     ...theme.typography.label,
     height: 32,
     width: 120,
+  },
+}))
+
+export const ItemListWrapper = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
+  display: 'block',
+  overflowX: 'auto',
+  overflowY: 'clip',
+  width: '100%',
+  flexGrow: 0,
+  boxSizing: 'border-box',
+  padding: theme.spacing(2),
+  gap: theme.spacing(2),
+  height: 160,
+  border: `1px solid ${theme.palette.common.white}`,
+  borderRadius: 8,
+  '&:hover, :active': {
+    padding: theme.spacing(2, 2, 0),
   },
 }))

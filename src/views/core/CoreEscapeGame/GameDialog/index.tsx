@@ -1,4 +1,4 @@
-import { Stack, Typography, useTheme } from '@mui/material'
+import { Stack, useTheme } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
 
@@ -6,7 +6,7 @@ import { gameStore } from 'stores/gameStore'
 
 import { SVGWrapper } from 'views/common/SVGWrapper'
 
-import { DialogBorderWrapper, DialogContentWrapper } from './components'
+import { DialogContentWrapper } from './components'
 
 export const GameDialog = observer(() => {
   const theme = useTheme()
@@ -48,19 +48,7 @@ export const GameDialog = observer(() => {
           />
         </div>
       </Stack>
-
-      <DialogBorderWrapper>
-        <DialogContentWrapper>
-          <Typography
-            variant="body1"
-            sx={{
-              whiteSpace: 'pre-line',
-            }}
-          >
-            {gameStore.dialogs[currentDialogId].join('\n\n')}
-          </Typography>
-        </DialogContentWrapper>
-      </DialogBorderWrapper>
+      <DialogContentWrapper variant="body1">{gameStore.dialogs[currentDialogId].join('\n\n')}</DialogContentWrapper>
     </Stack>
   )
 })

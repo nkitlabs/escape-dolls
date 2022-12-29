@@ -35,7 +35,7 @@ const theme = createTheme({
       '400': '#ecedf0',
     },
     success: {
-      main: '#1cc3a5', // * green
+      main: '#48742c', // * green
       dark: '#297078',
     },
     warning: {
