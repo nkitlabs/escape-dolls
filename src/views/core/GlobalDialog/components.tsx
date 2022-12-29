@@ -18,6 +18,9 @@ export const StyledDialog = styled(Dialog, {
     [theme.breakpoints.down('xs')]: {
       minWidth: 0,
     },
+    [theme.breakpoints.down('md')]: {
+      margin: theme.spacing(4, 0),
+    },
   },
 }))
 

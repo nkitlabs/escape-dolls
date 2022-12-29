@@ -1,15 +1,14 @@
-import { Stack, useTheme } from '@mui/material'
+import { Stack } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
 
 import { gameStore } from 'stores/gameStore'
 
-import { SVGWrapper } from 'views/common/SVGWrapper'
+import { PreviousNextButtons } from 'views/common/PreviousNextButtons'
 
 import { DialogContentWrapper } from './components'
 
 export const GameDialog = observer(() => {
-  const theme = useTheme()
   const [currentDialogId, setCurrentDialogId] = useState(0)
   useEffect(() => {
     setCurrentDialogId(gameStore.dialogs.length - 1)
@@ -18,35 +17,14 @@ export const GameDialog = observer(() => {
   return (
     <Stack gap={1}>
       <Stack direction="row" gap={2} justifyContent="center">
-        <div
-          onClick={() => currentDialogId > 0 && setCurrentDialogId((value) => value - 1)}
-          style={{ cursor: currentDialogId > 0 ? 'pointer' : 'auto' }}
-        >
-          <SVGWrapper
-            src="static/icons/arrow-left.svg"
-            width={24}
-            color={currentDialogId > 0 ? theme.palette.text.primary : theme.palette.text.disabled}
-            fill
-          />
-        </div>
-        <div
-          onClick={() => {
-            if (currentDialogId < gameStore.dialogs.length - 1) {
-              setCurrentDialogId((value) => value + 1)
-            }
-          }}
-          style={{ cursor: currentDialogId < gameStore.dialogs.length - 1 ? 'pointer' : 'auto' }}
-        >
-          <SVGWrapper
-            src="static/icons/arrow-left.svg"
-            width={24}
-            flipX
-            fill
-            color={
-              currentDialogId < gameStore.dialogs.length - 1 ? theme.palette.text.primary : theme.palette.text.disabled
-            }
-          />
-        </div>
+        <PreviousNextButtons
+          disabledLeft={currentDialogId > 0}
+          disabledRight={currentDialogId < gameStore.dialogs.length - 1}
+          onClickLeft={() => currentDialogId > 0 && setCurrentDialogId((value) => value - 1)}
+          onClickRight={() =>
+            currentDialogId < gameStore.dialogs.length - 1 && setCurrentDialogId((value) => value + 1)
+          }
+        />
       </Stack>
       <DialogContentWrapper variant="body1">{gameStore.dialogs[currentDialogId].join('\n\n')}</DialogContentWrapper>
     </Stack>

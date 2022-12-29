@@ -1,9 +1,16 @@
 import { Button, Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 
 import { ItemDetails } from 'types/types'
 
+import { useBreakpoints } from 'hooks/useBreakpoints'
+
 import { dialogStore } from 'stores/dialogStore'
+
+import { PreviousNextButtons } from 'views/common/PreviousNextButtons'
+
+import { Header, ModalWrapper } from './components'
 
 type NewItemModalProps = {
   newItems: ItemDetails[]
@@ -17,25 +24,41 @@ export const openNewItemModal = ({ newItems }: NewItemModalProps) => {
 }
 
 export const NewItemModal = observer(({ newItems }: NewItemModalProps) => {
+  const [id, setId] = useState(0)
+  const { downSm } = useBreakpoints()
+
   return (
-    <Stack p={2} gap={4} alignItems="center" justifyContent="center" maxHeight={560} width={560}>
-      <Typography variant="h6" fontWeight="bold" color="primary.darken">
-        You found: {newItems[0].name}
-      </Typography>
-      <img src={newItems[0].image} height={240} />
+    <ModalWrapper>
+      <Stack alignItems="center">
+        <Header>{`You found: ${newItems.length} ${newItems.length > 1 ? 'items' : 'item'}`}</Header>
+        {downSm ? (
+          <>
+            <Header>{`${newItems[id].name ?? 'an undefined object'}`}</Header>
+            <Header>{`${id + 1}/${newItems.length}`}</Header>
+          </>
+        ) : (
+          <Header>{`${newItems[id].name ?? 'an undefined object'} (${id + 1}/${newItems.length})`}</Header>
+        )}
+      </Stack>
+      <img src={newItems[id].image} height={downSm ? 120 : 240} />
       <Stack gap={2} alignItems="center">
-        <Typography variant="body1" color="primary.darken" align="center">
-          {newItems[0].description}
-        </Typography>
-        <Button
-          sx={{ height: 40, width: 160 }}
-          onClick={() => {
-            dialogStore.close()
-          }}
-        >
+        <Stack gap={1} alignItems="center">
+          <Typography variant="body1" color="primary.darken" align="center">
+            {newItems[id].description}
+          </Typography>
+          {newItems.length > 1 && (
+            <PreviousNextButtons
+              disabledLeft={id > 0}
+              disabledRight={id < newItems.length - 1}
+              onClickLeft={() => id > 0 && setId((value) => value - 1)}
+              onClickRight={() => id < newItems.length - 1 && setId((value) => value + 1)}
+            />
+          )}
+        </Stack>
+        <Button sx={{ height: 40, width: 160 }} onClick={() => dialogStore.close()}>
           Put in item list
         </Button>
       </Stack>
-    </Stack>
+    </ModalWrapper>
   )
 })
