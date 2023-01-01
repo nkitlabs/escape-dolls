@@ -18,15 +18,17 @@ export const GameDialog = observer(() => {
     <Stack gap={1}>
       <Stack direction="row" gap={2} justifyContent="center">
         <PreviousNextButtons
-          disabledLeft={currentDialogId > 0}
-          disabledRight={currentDialogId < gameStore.dialogs.length - 1}
+          disabledLeft={currentDialogId <= 0}
+          disabledRight={currentDialogId >= gameStore.dialogs.length - 1}
           onClickLeft={() => currentDialogId > 0 && setCurrentDialogId((value) => value - 1)}
           onClickRight={() =>
             currentDialogId < gameStore.dialogs.length - 1 && setCurrentDialogId((value) => value + 1)
           }
         />
       </Stack>
-      <DialogContentWrapper variant="body1">{gameStore.dialogs[currentDialogId].join('\n\n')}</DialogContentWrapper>
+      <DialogContentWrapper variant="body1">
+        {(gameStore.dialogs[currentDialogId] ?? []).join('\n\n')}
+      </DialogContentWrapper>
     </Stack>
   )
 })

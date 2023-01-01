@@ -9,17 +9,20 @@ type Props = {
   onClickRight: () => void
   disabledLeft: boolean
   disabledRight: boolean
+  darkColor?: boolean
 }
 
-export const PreviousNextButtons = ({ onClickLeft, onClickRight, disabledLeft, disabledRight }: Props) => {
+export const PreviousNextButtons = ({ onClickLeft, onClickRight, disabledLeft, disabledRight, darkColor }: Props) => {
   const theme = useTheme()
+  const normalColor = darkColor ? theme.palette.primary.darken : theme.palette.text.primary
+  const disableColor = darkColor ? theme.palette.text.secondary : theme.palette.text.disabled
   return (
     <Stack direction="row" gap={1}>
       <ArrowWrapper disabled={disabledLeft} onClick={onClickLeft}>
         <SVGWrapper
           src="static/icons/arrow-left.svg"
           width={24}
-          color={disabledLeft ? theme.palette.text.primary : theme.palette.text.disabled}
+          color={disabledLeft ? disableColor : normalColor}
           fill
         />
       </ArrowWrapper>
@@ -28,7 +31,7 @@ export const PreviousNextButtons = ({ onClickLeft, onClickRight, disabledLeft, d
           src="static/icons/arrow-left.svg"
           flipX
           width={24}
-          color={disabledRight ? theme.palette.text.primary : theme.palette.text.disabled}
+          color={disabledRight ? disableColor : normalColor}
           fill
         />
       </ArrowWrapper>

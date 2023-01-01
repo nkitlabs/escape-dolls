@@ -5,6 +5,8 @@ import { useState } from 'react'
 
 import { START_GAME_KEY } from 'types/constants'
 
+import { useBreakpoints } from 'hooks/useBreakpoints'
+
 import { gameService } from 'services/gameService'
 
 import { timerStore } from 'stores/timerStore'
@@ -15,6 +17,7 @@ import { PlayButton, StyledButton } from './components'
 
 export const LandingPage = observer(() => {
   const [playing, setPlaying] = useState(false)
+  const { downSm } = useBreakpoints()
   const { enqueueSnackbar } = useSnackbar()
   const onClickPlay = async () => {
     const result = await gameService.updateNewObject(START_GAME_KEY)
@@ -30,9 +33,27 @@ export const LandingPage = observer(() => {
       console.error('[Landing Page]', result.message)
     }
   }
-  return playing ? (
-    <CoreEscapeGame />
-  ) : (
+  if (playing) return <CoreEscapeGame />
+
+  if (downSm) {
+    return (
+      <Stack m="auto" alignItems="center">
+        <Box height={96} visibility="hidden"></Box>
+        <Stack justifyContent="center" alignItems="center" gap={6}>
+          <Typography variant="h4">Escape - Dolls</Typography>
+          <PlayButton variant="contained" size="large" onClick={onClickPlay}>
+            Play
+          </PlayButton>
+        </Stack>
+        <Stack mt={3}>
+          <StyledButton variant="contained" size="large">
+            Donate
+          </StyledButton>
+        </Stack>
+      </Stack>
+    )
+  }
+  return (
     <Stack m="auto" alignItems="center">
       <Box height={96} visibility="hidden"></Box>
       <Stack justifyContent="center" alignItems="center" gap={8}>

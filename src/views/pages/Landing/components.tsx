@@ -6,6 +6,12 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: 8,
   ...theme.typography.h6,
   fontWeight: 800,
+  [theme.breakpoints.down('sm')]: {
+    ...theme.typography.body1,
+    fontWeight: 800,
+    height: 40,
+    width: 160,
+  },
 }))
 
 export const PlayButton = styled(StyledButton)(() => ({

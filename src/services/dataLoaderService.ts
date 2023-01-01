@@ -1,64 +1,85 @@
 import axios from 'axios'
 
 import { KEY_SALT } from 'types/constants'
-import { FunctionResult, StoryInfo } from 'types/types'
+import { NotFoundError } from 'types/errors'
+import { FunctionResult, GetStoryInfoResult, StoryInfo } from 'types/types'
 
-import KeywordMapping from 'data/keyword_mapping.json'
-import StoryMapping from 'data/story_mapping.json'
+import StoryMapping from 'data/storyMapping.json'
 
-import { base64ToBinary, decryptWithSalt, getHash } from 'utils/cryptography'
-import { REGEX_ARTICLE, REGEX_METADATA_FILE_PREFIX } from 'utils/regex'
+import { gameStore } from 'stores/gameStore'
+
+import { decryptWithSalt, getHash } from 'utils/cryptography'
+
+const MAX_CHAIN_KEY = 5
 
 class DataLoaderService {
   constructor() {}
 
-  public getStoryInfo = async (key: string): Promise<FunctionResult<StoryInfo>> => {
-    try {
-      const base64EncodedStory = await this.getData(key)
-      if (!base64EncodedStory) return { success: false, message: 'not found' }
-      const story = JSON.parse(base64ToBinary(base64EncodedStory.replace(REGEX_METADATA_FILE_PREFIX, ''))) as StoryInfo
+  public getStoryInfo = async (key: string): Promise<FunctionResult<GetStoryInfoResult>> => {
+    let countChain = 0
+    let actualKey = key
 
-      return { success: true, data: story }
+    const result: GetStoryInfoResult = {
+      story: { key: actualKey },
+      chainKeys: [],
+      actualKey: key,
+      isFirstTime: true,
+    }
+
+    try {
+      while (countChain < MAX_CHAIN_KEY) {
+        if (gameStore.storyRecord[actualKey]) {
+          result.story = gameStore.storyRecord[actualKey]
+          result.isFirstTime = false
+          break
+        }
+
+        result.chainKeys.push(actualKey)
+        const storyInfoText = await this.getData(actualKey)
+        const story = JSON.parse(storyInfoText) as StoryInfo
+
+        if (story.mapKeyword) {
+          actualKey = story.mapKeyword
+        } else {
+          result.story = story
+          result.actualKey = actualKey
+          break
+        }
+        countChain += 1
+      }
+
+      if (countChain === MAX_CHAIN_KEY) return { success: false, error: new Error('chain key is too long') }
+
+      return { success: true, data: result }
     } catch (err) {
       console.error('[getStoryInfo]', err)
-      return { success: false, message: err.message }
+      return { success: false, error: err }
     }
   }
 
   public getImage = async (key: string): Promise<FunctionResult<string>> => {
     try {
       const img = await this.getData(key)
-      if (!img) return { success: false, message: 'not found' }
-
       return { success: true, data: img }
     } catch (err) {
       console.error('[getImage]:', err)
-      return { success: false, message: err.message }
+      if (err instanceof NotFoundError) {
+        return { success: false, error: new Error(`internal error: ${err.message}`) }
+      }
+      return { success: false, error: err }
     }
-  }
-
-  // TODO: fix logic
-  // 1. check require, if not pass required field, return actual key to `${key}-normal`
-  // 2. check -combine and -observe format (should check that objects already existed)
-  // 3. decode mapping key.
-  public getActualKey = (key: string): string => {
-    const newKey = key.trim().replace(REGEX_ARTICLE, '').trim()
-    const mappedKey = KeywordMapping[newKey] ?? newKey
-    return mappedKey
   }
 
   private getData = async (key: string): Promise<string> => {
     const filename = getHash(key.concat(KEY_SALT))
     if (!StoryMapping[filename]) {
-      return ''
+      throw new NotFoundError(`file ${key} ${filename}`)
     }
 
-    const { iv } = StoryMapping[filename]
+    const iv = StoryMapping[filename]
     const hashedKey = getHash(key)
     const { data } = await axios.get(`data/${filename}.txt`)
     const result = decryptWithSalt(Buffer.from(data, 'base64'), hashedKey, iv).toString('binary')
-
-    if (!REGEX_METADATA_FILE_PREFIX.test(result)) throw new Error(`incorrect decryption ${key}`)
 
     return result
   }

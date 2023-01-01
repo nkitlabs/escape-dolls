@@ -20,7 +20,7 @@ export const StyledButton = styled(Button)(({ theme }) => ({
 
 export const ItemListWrapper = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
-  display: 'block',
+  display: 'flex',
   overflowX: 'auto',
   overflowY: 'clip',
   width: '100%',

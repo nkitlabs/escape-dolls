@@ -34,6 +34,12 @@ const Root = styled(Stack)(() => ({
 // * Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createCache({ key: 'css', prepend: true })
 
+const CustomStackbarProvider = styled(SnackbarProvider)(({ theme }) => ({
+  '&.SnackbarItem-variantInfo': {
+    backgroundColor: theme.palette.primary.main,
+  },
+}))
+
 const CustomApp = ({ Component, emotionCache = clientSideEmotionCache, pageProps }: CustomAppProps) => {
   return (
     <>
@@ -49,13 +55,13 @@ const CustomApp = ({ Component, emotionCache = clientSideEmotionCache, pageProps
           <MaterialThemeProvider theme={theme}>
             <EmotionThemeProvider theme={theme}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <SnackbarProvider hideIconVariant={true}>
+                <CustomStackbarProvider hideIconVariant={true}>
                   <CssBaseline />
                   <GlobalDialog />
                   <Root>
                     <Component {...pageProps} />
                   </Root>
-                </SnackbarProvider>
+                </CustomStackbarProvider>
               </LocalizationProvider>
             </EmotionThemeProvider>
           </MaterialThemeProvider>

@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
@@ -40,21 +40,19 @@ export const NewItemModal = observer(({ newItems }: NewItemModalProps) => {
           <Header>{`${newItems[id].name ?? 'an undefined object'} (${id + 1}/${newItems.length})`}</Header>
         )}
       </Stack>
-      <img src={newItems[id].image} height={downSm ? 120 : 240} />
+      <Stack gap={1} alignItems="center">
+        <img src={newItems[id].image} height={downSm ? 120 : 240} />
+        {newItems.length > 1 && (
+          <PreviousNextButtons
+            disabledLeft={id <= 0}
+            disabledRight={id >= newItems.length - 1}
+            onClickLeft={() => id > 0 && setId((value) => value - 1)}
+            onClickRight={() => id < newItems.length - 1 && setId((value) => value + 1)}
+            darkColor
+          />
+        )}
+      </Stack>
       <Stack gap={2} alignItems="center">
-        <Stack gap={1} alignItems="center">
-          <Typography variant="body1" color="primary.darken" align="center">
-            {newItems[id].description}
-          </Typography>
-          {newItems.length > 1 && (
-            <PreviousNextButtons
-              disabledLeft={id > 0}
-              disabledRight={id < newItems.length - 1}
-              onClickLeft={() => id > 0 && setId((value) => value - 1)}
-              onClickRight={() => id < newItems.length - 1 && setId((value) => value + 1)}
-            />
-          )}
-        </Stack>
         <Button sx={{ height: 40, width: 160 }} onClick={() => dialogStore.close()}>
           Put in item list
         </Button>

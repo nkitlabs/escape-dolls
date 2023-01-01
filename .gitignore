@@ -9,6 +9,7 @@ public/data/draft
 
 src/data
 public/data
+src/views/unused
 
 # testing
 /coverage

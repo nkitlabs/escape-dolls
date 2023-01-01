@@ -37,7 +37,7 @@ export const CoreEscapeGame = observer(() => {
     return (
       <Stack p={4} gap={2} m="auto">
         <Typography variant="h6">Objective: Escape from the locked room.</Typography>
-        <Stack gap={2} width={640}>
+        <Stack gap={2}>
           <Stack direction="row" gap={4}>
             <Stack justifyContent="center" gap={2}>
               <Typography variant="body1" color="text.secondary">
@@ -50,7 +50,7 @@ export const CoreEscapeGame = observer(() => {
               <ObservableItems />
             </Stack>
           </Stack>
-          <Stack width="100%">
+          <Stack>
             <GameDialog />
           </Stack>
         </Stack>
@@ -59,25 +59,23 @@ export const CoreEscapeGame = observer(() => {
   }
 
   return (
-    <Stack px={4} py={2} my="auto">
-      <Stack direction="row" gap={4} justifyContent="center">
-        <img
-          src="/static/escape-dolls-room.png"
-          width={downLg ? 500 : 600}
-          height="auto"
-          style={{ borderRadius: 16, objectFit: 'cover' }}
-        />
-        <Stack gap={4} width={downLg ? 400 : 650} justifyContent="center">
-          <Stack>
-            <Typography variant="h6">Objective: Escape from the locked room.</Typography>
-            <Typography variant="body1" color="text.secondary">
-              {displayTimer(timerStore.timer)}
-            </Typography>
-          </Stack>
-          <SearchItem />
-          <ObservableItems />
-          <GameDialog />
+    <Stack px={4} py={2} m="auto" direction="row" gap={4}>
+      <img
+        src="/static/escape-dolls-room.png"
+        width={downLg ? 450 : 600}
+        height="auto"
+        style={{ borderRadius: 16, objectFit: 'cover' }}
+      />
+      <Stack gap={4} width={downLg ? 450 : 650} justifyContent="center">
+        <Stack>
+          <Typography variant="h6">Objective: Escape from the locked room.</Typography>
+          <Typography variant="body1" color="text.secondary">
+            {displayTimer(timerStore.timer)}
+          </Typography>
         </Stack>
+        <SearchItem />
+        <ObservableItems />
+        <GameDialog />
       </Stack>
     </Stack>
   )

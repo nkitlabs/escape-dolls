@@ -1,13 +1,12 @@
 import { Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-import { TIME_LIMIT } from 'types/constants'
+import { useCustomSnackbar } from 'hooks/useCustomSnackbar'
 
 import { gameService } from 'services/gameService'
 
-import { timerStore } from 'stores/timerStore'
+import { gameStore } from 'stores/gameStore'
 
 import { openNewItemModal } from 'views/core/CoreEscapeGame/NewItemModal'
 
@@ -16,35 +15,33 @@ import { SearchButton, SearchTextField } from './components'
 export const SearchItem = observer(() => {
   const [item, setItem] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { enqueueSnackbar } = useSnackbar()
+  const { pushErrorSnackbar, pushMessageSnackbar } = useCustomSnackbar()
+
   const onClickSearch = async () => {
     if (!item) {
       return
     }
     setIsLoading(true)
-    const result = await gameService.updateNewObject(`${item}-search`)
+    const result = await gameService.searchItem(item)
 
     if (!result.success) {
+      pushErrorSnackbar({ error: result.error, penalty: result.penalty })
       setIsLoading(false)
-
-      if (!result.isInteralError) {
-        timerStore.addTimer(10)
-      }
-      const errMsg = result.isInteralError
-        ? `something went wrong. Please contact an admin`
-        : `he doesn't see ${item} in this room. Penalty ${timerStore.timer > TIME_LIMIT ? '+' : '-'}10 second`
-      enqueueSnackbar(errMsg, {
-        variant: 'error',
-        autoHideDuration: 3000,
-        anchorOrigin: { vertical: 'top', horizontal: 'center' },
-      })
       return
     }
 
     setIsLoading(false)
-    openNewItemModal({
-      newItems: result.data,
-    })
+    if (!result.data?.isFirstTime) {
+      const readableName = gameStore.storyRecord[result.data?.key].name
+      pushMessageSnackbar({ message: `He already searched ${readableName}`, messageType: 'info' })
+      return
+    }
+
+    if (result.data?.newItems.length > 0) {
+      openNewItemModal({
+        newItems: result.data.newItems,
+      })
+    }
   }
 
   return (

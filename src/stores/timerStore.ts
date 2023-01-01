@@ -4,6 +4,7 @@ export class TimerStore {
   private _timer: number
   private _timeIntervalSetter: NodeJS.Timer
   public isStartTimer: boolean
+  public timeLimit: number
   constructor() {
     this._timer = 0
     this.isStartTimer = false
@@ -12,6 +13,7 @@ export class TimerStore {
         this._timer += 1
       })
     }, 1000)
+    this.timeLimit = 3600
     makeAutoObservable(this)
   }
 
