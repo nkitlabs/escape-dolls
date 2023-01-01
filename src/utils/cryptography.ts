@@ -1,7 +1,7 @@
 import { BinaryLike, createCipheriv, createDecipheriv, createHash, randomBytes } from 'crypto'
 import { isString } from 'lodash'
 
-import { METADATA_FILE_PREFIX_REGEX } from 'utils/regex'
+import { REGEX_METADATA_FILE_PREFIX } from 'utils/regex'
 
 // https://stackoverflow.com/questions/1220751/how-to-choose-an-aes-encryption-mode-cbc-ecb-ctr-ocb-cfb
 // https://www.geeksforgeeks.org/node-js-crypto-createhash-method/
@@ -47,7 +47,7 @@ export const getDecryptedDataFromFile = async (file?: File): Promise<string> => 
       let newData: string | undefined
 
       if (isString(reader.result)) {
-        newData = reader.result.replace(METADATA_FILE_PREFIX_REGEX, '')
+        newData = reader.result.replace(REGEX_METADATA_FILE_PREFIX, '')
 
         // we encode base64 before we write the data, need to convert back
         resolve(Buffer.from(newData, 'base64').toString('binary'))
