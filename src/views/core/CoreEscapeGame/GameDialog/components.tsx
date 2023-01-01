@@ -6,6 +6,7 @@ export const DialogContentWrapper = styled(Typography)(({ theme }) => ({
   borderRadius: 8,
   overflowY: 'auto',
   whiteSpace: 'pre-wrap',
+  animation: 'flash 1.5s linear',
   '&::-webkit-scrollbar': {
     width: 8,
     opacity: 0.5,
@@ -19,6 +20,17 @@ export const DialogContentWrapper = styled(Typography)(({ theme }) => ({
     backgroundColor: theme.palette.text.secondary,
   },
   padding: theme.spacing(1, 2),
+  '@keyframes flash': {
+    '0%': {
+      opacity: 1,
+    },
+    '20%': {
+      opacity: 0,
+    },
+    '100%': {
+      opacity: 1,
+    },
+  },
 
   [theme.breakpoints.down('md')]: {
     height: 200,

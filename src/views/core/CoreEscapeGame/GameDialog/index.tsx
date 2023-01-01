@@ -26,7 +26,7 @@ export const GameDialog = observer(() => {
           }
         />
       </Stack>
-      <DialogContentWrapper variant="body1">
+      <DialogContentWrapper key={`dialog-content-${gameStore.dialogs.length}`} variant="body1">
         {(gameStore.dialogs[currentDialogId] ?? []).join('\n\n')}
       </DialogContentWrapper>
     </Stack>
