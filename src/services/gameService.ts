@@ -1,5 +1,6 @@
 import { zip } from 'lodash'
 
+import { START_GAME_KEY } from 'types/constants'
 import { CombineItemsError, NotFoundError, ObserveItemsError, SearchItemsError, customErrorName } from 'types/errors'
 import { FunctionResult, ItemDetails, ReplaceItemInfos, UpdateNewObjectResult } from 'types/types'
 
@@ -47,6 +48,14 @@ class GameService {
       console.error('[searchItems]:', result.error.message)
       const newErr = customErrorName.has(result.error.name) ? new SearchItemsError(inputKey) : result.error
       return { ...result, error: newErr }
+    }
+    return result
+  }
+
+  public startGame = async (): Promise<FunctionResult<UpdateNewObjectResult>> => {
+    const result = await this.updateNewObject(START_GAME_KEY)
+    if (!result.success) {
+      console.error('[startGame]:', result.error.message)
     }
     return result
   }

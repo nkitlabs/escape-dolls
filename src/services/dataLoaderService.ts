@@ -4,8 +4,6 @@ import { KEY_SALT } from 'types/constants'
 import { NotFoundError } from 'types/errors'
 import { FunctionResult, GetStoryInfoResult, StoryInfo } from 'types/types'
 
-import StoryMapping from 'data/storyMapping.json'
-
 import { gameStore } from 'stores/gameStore'
 
 import { decryptWithSalt, getHash } from 'utils/cryptography'
@@ -13,7 +11,14 @@ import { decryptWithSalt, getHash } from 'utils/cryptography'
 const MAX_CHAIN_KEY = 5
 
 class DataLoaderService {
+  public storyMapping: Record<string, string> | undefined = undefined
   constructor() {}
+
+  public setStoryMapping = async () => {
+    if (this.storyMapping) return
+    const resp = await fetch('data/info/storyMapping.json')
+    this.storyMapping = await resp.json()
+  }
 
   public getStoryInfo = async (key: string): Promise<FunctionResult<GetStoryInfoResult>> => {
     let countChain = 0
@@ -71,14 +76,18 @@ class DataLoaderService {
   }
 
   private getData = async (key: string): Promise<string> => {
+    if (!this.storyMapping) {
+      throw new Error('storyMapping has not been set')
+    }
+
     const filename = getHash(key.concat(KEY_SALT))
-    if (!StoryMapping[filename]) {
+    if (!this.storyMapping[filename]) {
       throw new NotFoundError(`file ${key} ${filename}`)
     }
 
-    const iv = StoryMapping[filename]
+    const iv = this.storyMapping[filename]
     const hashedKey = getHash(key)
-    const { data } = await axios.get(`data/${filename}.txt`)
+    const { data } = await axios.get(`data/info/${filename}.txt`)
     const result = decryptWithSalt(Buffer.from(data, 'base64'), hashedKey, iv).toString('binary')
 
     return result
