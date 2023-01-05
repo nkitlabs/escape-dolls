@@ -32,7 +32,7 @@ export const getImageFile = async (filename: string): Promise<string> => {
 }
 
 const onClick = async () => {
-  const storyFilenames = (await getTextFile(`${STORY_DATA_FOLDERS}/01-index-file.txt`)).split('\n')
+  const storyFilenames = (await getTextFile(`data/draft/01-index-file-story.txt`)).split('\n')
 
   const storyData = await Promise.all(
     storyFilenames.map(async (filename) => {
@@ -49,7 +49,7 @@ const onClick = async () => {
     }),
   )
 
-  const imgFilenames = (await getTextFile(`${IMAGE_FOLDERS}/01-index-file.txt`)).split('\n')
+  const imgFilenames = (await getTextFile(`data/draft/01-index-file-img.txt`)).split('\n')
 
   const imgData = await Promise.all(
     imgFilenames.map(async (filename) => {

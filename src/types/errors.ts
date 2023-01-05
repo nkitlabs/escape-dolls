@@ -13,9 +13,20 @@ export class DuplicateItemError extends Error {
 }
 
 export class DuplicateStoryError extends Error {
-  constructor(key?: string) {
-    super(key ? `story ${key} is already in the list` : `story is already in the list`)
+  key: string
+  constructor(key: string) {
+    super(`story ${key} is already in the list`)
     this.name = 'DuplicateStoryError'
+    this.key = key ?? 'an undefined item'
+  }
+}
+
+export class SearchExistingItemError extends Error {
+  itemName: string
+  constructor(itemName: string) {
+    super(`item ${itemName} is already in the list`)
+    this.name = 'SearchExistingItemError'
+    this.itemName = itemName
   }
 }
 

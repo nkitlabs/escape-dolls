@@ -16,7 +16,7 @@ class DataLoaderService {
 
   public setStoryMapping = async () => {
     if (this.storyMapping) return
-    const resp = await fetch('data/info/storyMapping.json')
+    const resp = await fetch('data/info/story-mapping.json')
     this.storyMapping = await resp.json()
   }
 
@@ -28,14 +28,13 @@ class DataLoaderService {
       story: { key: actualKey },
       chainKeys: [],
       actualKey: key,
-      isFirstTime: true,
     }
 
     try {
       while (countChain < MAX_CHAIN_KEY) {
         if (gameStore.storyRecord[actualKey]) {
           result.story = gameStore.storyRecord[actualKey]
-          result.isFirstTime = false
+          result.isRepeated = true
           break
         }
 

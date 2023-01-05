@@ -2,6 +2,8 @@ import { Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
+import { DuplicateStoryError, SearchExistingItemError } from 'types/errors'
+
 import { useCustomSnackbar } from 'hooks/useCustomSnackbar'
 
 import { gameService } from 'services/gameService'
@@ -25,19 +27,22 @@ export const SearchItem = observer(() => {
     const result = await gameService.searchItem(item)
 
     if (!result.success) {
-      pushErrorSnackbar({ error: result.error, penalty: result.penalty })
+      if (result.error instanceof DuplicateStoryError) {
+        const readableName = gameStore.storyRecord[result.error.key].name
+        pushMessageSnackbar({ message: `He already searched ${readableName}`, messageType: 'info' })
+      } else if (result.error instanceof SearchExistingItemError) {
+        const readableName = result.error.itemName
+        pushMessageSnackbar({ message: `He already has ${readableName}`, messageType: 'info' })
+      } else {
+        pushErrorSnackbar({ error: result.error, penalty: result.penalty })
+      }
       setIsLoading(false)
       return
     }
 
     setIsLoading(false)
-    if (!result.data?.isFirstTime) {
-      const readableName = gameStore.storyRecord[result.data?.key].name
-      pushMessageSnackbar({ message: `He already searched ${readableName}`, messageType: 'info' })
-      return
-    }
 
-    if (result.data?.newItems.length > 0) {
+    if (result.data?.newItems?.length) {
       openNewItemModal({
         newItems: result.data.newItems,
       })

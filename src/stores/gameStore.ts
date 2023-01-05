@@ -7,6 +7,7 @@ export class GameStore {
   public dialogMapping: Record<string, string[]>
   public imgRecord: Record<string, string>
   public storyRecord: Record<string, StoryInfo>
+  public itemKeywordToName: Record<string, string>
   public existingItems: ItemDetails[]
   public selectedItems: Set<string>
 
@@ -14,6 +15,7 @@ export class GameStore {
     this.dialogs = []
     this.imgRecord = {}
     this.storyRecord = {}
+    this.itemKeywordToName = {}
     this.dialogMapping = {}
     this.existingItems = []
     this.selectedItems = new Set()
@@ -39,9 +41,14 @@ export class GameStore {
 
   public addExistingItems = (items: ItemDetails[]) => {
     this.existingItems.push(...items)
+    items.forEach((item) => item.possibleKeywords?.forEach((v) => (this.itemKeywordToName[v] = item.name)))
   }
 
   public removeExistingItem = (id: number) => {
+    const item = this.existingItems[id]
+    item.possibleKeywords?.forEach((v) => {
+      delete this.itemKeywordToName[v]
+    })
     this.existingItems = this.existingItems.splice(id, 1)
   }
 
@@ -50,10 +57,16 @@ export class GameStore {
   }
 
   public replaceItem = (id: number, newItem: ItemDetails) => {
+    const oldItem = this.existingItems[id]
+    oldItem.possibleKeywords?.forEach((v) => {
+      delete this.itemKeywordToName[v]
+    })
+
     this.existingItems[id] = newItem
     if (this.selectedItems.has(newItem.key)) {
       this.selectedItems.delete(newItem.key)
     }
+    newItem.possibleKeywords?.forEach((v) => (this.itemKeywordToName[v] = newItem.name))
   }
 
   public clearSelectedItems = () => {

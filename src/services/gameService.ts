@@ -1,7 +1,15 @@
 import { zip } from 'lodash'
 
 import { START_GAME_KEY } from 'types/constants'
-import { CombineItemsError, NotFoundError, ObserveItemsError, SearchItemsError, customErrorName } from 'types/errors'
+import {
+  CombineItemsError,
+  DuplicateStoryError,
+  NotFoundError,
+  ObserveItemsError,
+  SearchExistingItemError,
+  SearchItemsError,
+  customErrorName,
+} from 'types/errors'
 import { FunctionResult, ItemDetails, ReplaceItemInfos, UpdateNewObjectResult } from 'types/types'
 
 import { dataLoaderService } from 'services/dataLoaderService'
@@ -40,7 +48,11 @@ class GameService {
   }
 
   public searchItem = async (inputKey: string): Promise<FunctionResult<UpdateNewObjectResult>> => {
-    const key = inputKey.trim().replace(REGEX_ARTICLE, '').replace(' ', '-').trim().toLowerCase()
+    const key = inputKey.trim().replace(REGEX_ARTICLE, '').replace(new RegExp('\\s+'), '-').trim().toLowerCase()
+    if (gameStore.itemKeywordToName[key]) {
+      return { success: false, error: new SearchExistingItemError(gameStore.itemKeywordToName[key]) }
+    }
+
     const keyword = 'search+' + key
     const result = await this.updateNewObject(keyword)
 
@@ -48,6 +60,10 @@ class GameService {
       console.error('[searchItems]:', result.error.message)
       const newErr = customErrorName.has(result.error.name) ? new SearchItemsError(inputKey) : result.error
       return { ...result, error: newErr }
+    }
+
+    if (result.data.isRepeated) {
+      return { success: false, error: new DuplicateStoryError(result.data.key) }
     }
     return result
   }
@@ -67,17 +83,16 @@ class GameService {
       if (!storyInfoResult.success) {
         return storyInfoResult
       }
-      const { isFirstTime, chainKeys, story: storyInfo } = storyInfoResult.data
+      const { isRepeated, chainKeys, story: storyInfo } = storyInfoResult.data
       const { dialogs, newItems } = storyInfo
 
       // if it is not first time add dialogs and return.
-      if (!isFirstTime) {
+      if (isRepeated) {
         if (dialogs && dialogs.length > 0) {
           gameStore.addDialog(dialogs)
           chainKeys.forEach((key) => gameStore.addDialogMapping(key, dialogs))
         }
-
-        return { success: true, data: { isFirstTime: isFirstTime, newItems: newItems ?? [], key: storyInfo.key } }
+        return { success: true, data: { isRepeated: isRepeated, key: storyInfo.key } }
       }
 
       // get updatedItems
@@ -92,7 +107,8 @@ class GameService {
         const newImageUrls = imgResults.map((result) => (result.success ? result.data : ''))
         updatedItems = zip(newImageUrls, newItems).map(([url, item]) => ({
           ...item,
-          key: item?.key ?? '',
+          name: item!.name,
+          key: item!.key ?? '',
           image: url,
         }))
       }
@@ -114,7 +130,7 @@ class GameService {
         })
       }
 
-      return { success: true, data: { isFirstTime: isFirstTime, newItems: updatedItems, key: storyInfo.key } }
+      return { success: true, data: { newItems: updatedItems, key: storyInfo.key } }
     } catch (err) {
       console.error('[updateNewObject]', err, key)
       return { success: false, error: err }

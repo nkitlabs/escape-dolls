@@ -17,13 +17,19 @@ export type ReplaceItemInfos = {
   hasNewImage?: boolean
 }
 
+export type ShowModalInfo = {
+  id: number
+  params: string[]
+}
+
 export type StoryInfo = {
   key: string
   name?: string
   mapKeyword?: string
   newItems?: ItemDetails[]
   replaceItems?: ReplaceItemInfos[]
-  showModalId?: string
+  destroyItems?: ReplaceItemInfos[]
+  showModal?: ShowModalInfo
   dialogs?: string[]
   penalty?: number
 }
@@ -32,19 +38,20 @@ export type GetStoryInfoResult = {
   story: StoryInfo
   chainKeys: string[]
   actualKey: string
-  isFirstTime: boolean
+  isRepeated?: boolean
 }
 
 export type UpdateNewObjectResult = {
   key: string
-  isFirstTime: boolean
-  newItems: ItemDetails[]
+  isRepeated?: boolean
+  newItems?: ItemDetails[]
 }
 
 // always has an image.
 export type ItemDetails = {
   key: string
-  name?: string
+  name: string
+  possibleKeywords?: string[]
   image?: string
   description?: string
 }
