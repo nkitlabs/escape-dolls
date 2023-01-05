@@ -32,7 +32,8 @@ export const ObservableItems = observer(() => {
     }
 
     setIsLoading(false)
-    if (result.data?.isFirstTime && result.data?.newItems.length > 0) {
+
+    if (!result.data?.isRepeated && result.data?.newItems?.length) {
       openNewItemModal({
         newItems: result.data.newItems,
       })
@@ -54,7 +55,12 @@ export const ObservableItems = observer(() => {
     }
 
     setIsLoading(false)
-    if (result.data?.isFirstTime && result.data?.newItems.length > 0) {
+
+    if (result.data.functionMapping) {
+      const { id, params } = result.data.functionMapping
+      console.log(gameStore.functionMapping, id, params)
+      gameStore.functionMapping[id](params)
+    } else if (!result.data?.isRepeated && result.data?.newItems?.length) {
       openNewItemModal({
         newItems: result.data.newItems,
       })

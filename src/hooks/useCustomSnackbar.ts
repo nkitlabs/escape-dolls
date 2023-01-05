@@ -27,7 +27,7 @@ export const useCustomSnackbar = () => {
 
   const pushErrorSnackbar = ({ error, penalty: penaltyParam }: PushErrorSnackbarParams) => {
     let errorMsg = ''
-    if (customErrorName.has(error.name)) {
+    if (customErrorName.has(error.name) || penaltyParam) {
       const penalty = penaltyParam ?? 10
       errorMsg = `${error.message} Penalty ${timerStore.timer > timerStore.timeLimit ? '+' : '-'}${penalty} second`
       timerStore.addTimer(penalty)

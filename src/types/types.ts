@@ -9,7 +9,7 @@ export type FunctionResult<T = undefined> =
       penalty?: number
     }
 
-export type ReplaceItemInfos = {
+export type ReplaceItemInfo = {
   oldKey: string
   newKey: string
   newDescription?: string
@@ -17,7 +17,11 @@ export type ReplaceItemInfos = {
   hasNewImage?: boolean
 }
 
-export type ShowModalInfo = {
+export type DestroyItemInfo = {
+  key: string
+}
+
+export type FunctionMappingInfo = {
   id: number
   params: string[]
 }
@@ -27,9 +31,9 @@ export type StoryInfo = {
   name?: string
   mapKeyword?: string
   newItems?: ItemDetails[]
-  replaceItems?: ReplaceItemInfos[]
-  destroyItems?: ReplaceItemInfos[]
-  showModal?: ShowModalInfo
+  replaceItems?: ReplaceItemInfo[]
+  destroyItems?: DestroyItemInfo[]
+  functionMapping?: FunctionMappingInfo
   dialogs?: string[]
   penalty?: number
 }
@@ -45,6 +49,7 @@ export type UpdateNewObjectResult = {
   key: string
   isRepeated?: boolean
   newItems?: ItemDetails[]
+  functionMapping?: FunctionMappingInfo
 }
 
 // always has an image.

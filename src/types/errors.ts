@@ -30,6 +30,13 @@ export class SearchExistingItemError extends Error {
   }
 }
 
+export class StoryPenaltyError extends Error {
+  constructor(key: string, penalty: number) {
+    super(`incorrect action; story ${key} has a penalty ${penalty} second.`)
+    this.name = 'StoryPenaltyError'
+  }
+}
+
 export class CombineItemsError extends Error {
   constructor() {
     super('He cannot combine selected items.')
@@ -55,7 +62,9 @@ export const customErrorName = new Set([
   'NotFoundError',
   'DuplicateItemError',
   'DuplicateStoryError',
+  'SearchExistingItemError',
   'CombineItemsError',
   'ObserveItemsError',
   'SearchItemsError',
+  'StoryPenaltyError',
 ])

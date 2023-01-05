@@ -8,9 +8,10 @@ import {
   ObserveItemsError,
   SearchExistingItemError,
   SearchItemsError,
+  StoryPenaltyError,
   customErrorName,
 } from 'types/errors'
-import { FunctionResult, ItemDetails, ReplaceItemInfos, UpdateNewObjectResult } from 'types/types'
+import { FunctionResult, ItemDetails, ReplaceItemInfo, UpdateNewObjectResult } from 'types/types'
 
 import { dataLoaderService } from 'services/dataLoaderService'
 
@@ -22,13 +23,13 @@ class GameService {
   public combineItems = async (): Promise<FunctionResult<UpdateNewObjectResult>> => {
     const keyword = 'combine+' + Array.from(gameStore.selectedItems).sort().join('+')
     const result = await this.updateNewObject(keyword)
+    gameStore.clearSelectedItems()
 
     if (!result.success) {
       console.error('[combineItems]:', result.error.message)
       const newErr = customErrorName.has(result.error.name) ? new CombineItemsError() : result.error
       return { ...result, error: newErr }
     }
-    gameStore.clearSelectedItems()
     return result
   }
 
@@ -36,6 +37,7 @@ class GameService {
     const selectedItem = Array.from(gameStore.selectedItems)[0]
     const keyword = 'observe+' + selectedItem
     const result = await this.updateNewObject(keyword)
+    gameStore.clearSelectedItems()
 
     if (!result.success) {
       const objName = gameStore.existingItems.filter((v) => v.key === selectedItem)[0].name ?? 'an undefined object'
@@ -43,7 +45,6 @@ class GameService {
       const newErr = customErrorName.has(result.error.name) ? new ObserveItemsError(objName) : result.error
       return { ...result, error: newErr }
     }
-    gameStore.clearSelectedItems()
     return result
   }
 
@@ -84,7 +85,13 @@ class GameService {
         return storyInfoResult
       }
       const { isRepeated, chainKeys, story: storyInfo } = storyInfoResult.data
-      const { dialogs, newItems } = storyInfo
+      const { dialogs, newItems, penalty, functionMapping, destroyItems } = storyInfo
+
+      // if story cause a player some penalty. return result with penalty
+      if (penalty) {
+        if (dialogs) gameStore.addDialog(dialogs)
+        return { success: false, error: new StoryPenaltyError(storyInfo.key, penalty), penalty: penalty }
+      }
 
       // if it is not first time add dialogs and return.
       if (isRepeated) {
@@ -92,7 +99,7 @@ class GameService {
           gameStore.addDialog(dialogs)
           chainKeys.forEach((key) => gameStore.addDialogMapping(key, dialogs))
         }
-        return { success: true, data: { isRepeated: isRepeated, key: storyInfo.key } }
+        return { success: true, data: { isRepeated: isRepeated, key: storyInfo.key, functionMapping: functionMapping } }
       }
 
       // get updatedItems
@@ -121,7 +128,13 @@ class GameService {
 
       // update store at the end
       gameStore.addExistingItems(updatedItems)
+      if (storyInfo.destroyItems) {
+      }
       replaceItemDetails.forEach(({ id, newItem }) => gameStore.replaceItem(id, newItem))
+      destroyItems?.forEach(({ key }) => {
+        const id = gameStore.existingItems.findIndex((v) => v.key === key)
+        gameStore.removeExistingItem(id)
+      })
       if (dialogs && dialogs.length > 0) {
         gameStore.addDialog(dialogs)
         chainKeys.forEach((key) => {
@@ -130,7 +143,7 @@ class GameService {
         })
       }
 
-      return { success: true, data: { newItems: updatedItems, key: storyInfo.key } }
+      return { success: true, data: { newItems: updatedItems, key: storyInfo.key, functionMapping: functionMapping } }
     } catch (err) {
       console.error('[updateNewObject]', err, key)
       return { success: false, error: err }
@@ -157,7 +170,7 @@ class GameService {
     }
   }
 
-  private getReplaceItemDetails = async (item: ReplaceItemInfos) => {
+  private getReplaceItemDetails = async (item: ReplaceItemInfo) => {
     const oldKey = item.oldKey
     const id = gameStore.existingItems.findIndex((v) => v.key === oldKey)
     if (id === -1) {

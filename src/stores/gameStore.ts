@@ -10,6 +10,7 @@ export class GameStore {
   public itemKeywordToName: Record<string, string>
   public existingItems: ItemDetails[]
   public selectedItems: Set<string>
+  public functionMapping: Record<number, (params: string[]) => unknown>
 
   constructor() {
     this.dialogs = []
@@ -18,6 +19,7 @@ export class GameStore {
     this.itemKeywordToName = {}
     this.dialogMapping = {}
     this.existingItems = []
+    this.functionMapping = {}
     this.selectedItems = new Set()
 
     makeAutoObservable(this)
@@ -49,7 +51,7 @@ export class GameStore {
     item.possibleKeywords?.forEach((v) => {
       delete this.itemKeywordToName[v]
     })
-    this.existingItems = this.existingItems.splice(id, 1)
+    this.existingItems.splice(id, 1)
   }
 
   public toggleSelectedItem = (key: string) => {
@@ -71,6 +73,10 @@ export class GameStore {
 
   public clearSelectedItems = () => {
     this.selectedItems.clear()
+  }
+
+  public registerFunctionsMapping = (id: number, f: (params: string[]) => unknown) => {
+    this.functionMapping[id] = f
   }
 }
 

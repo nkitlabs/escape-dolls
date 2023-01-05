@@ -1,4 +1,4 @@
-import { Button, Stack } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
@@ -40,8 +40,11 @@ export const NewItemModal = observer(({ newItems }: NewItemModalProps) => {
           <Header>{`${newItems[id].name ?? 'an undefined object'} (${id + 1}/${newItems.length})`}</Header>
         )}
       </Stack>
-      <Stack gap={1} alignItems="center">
+      <Stack gap={1} alignItems="center" px={3}>
         <img src={newItems[id].image} height={downSm ? 120 : 240} />
+        <Typography align="center" color="primary.darken" variant={downSm ? 'body2' : 'body1'}>
+          {newItems[id].description}
+        </Typography>
         {newItems.length > 1 && (
           <PreviousNextButtons
             disabledLeft={id <= 0}
