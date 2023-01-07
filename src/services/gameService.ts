@@ -8,6 +8,7 @@ import {
   ObserveItemsError,
   SearchExistingItemError,
   SearchItemsError,
+  SolveItemError,
   StoryPenaltyError,
   customErrorName,
 } from 'types/errors'
@@ -65,6 +66,18 @@ class GameService {
 
     if (result.data.isRepeated) {
       return { success: false, error: new DuplicateStoryError(result.data.key) }
+    }
+    return result
+  }
+
+  public solveItem = async (key: string, answer: string): Promise<FunctionResult<UpdateNewObjectResult>> => {
+    const keyword = `solve+${key}+${answer}`
+    const result = await this.updateNewObject(keyword)
+
+    if (!result.success) {
+      console.error('[solveItem]:', result.error.message)
+      const newErr = customErrorName.has(result.error.name) ? new SolveItemError() : result.error
+      return { ...result, error: newErr, penalty: result.penalty }
     }
     return result
   }

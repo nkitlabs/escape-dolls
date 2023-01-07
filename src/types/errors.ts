@@ -51,6 +51,13 @@ export class ObserveItemsError extends Error {
   }
 }
 
+export class SolveItemError extends Error {
+  constructor() {
+    super('Incorrect!!')
+    this.name = 'SolveItemError'
+  }
+}
+
 export class SearchItemsError extends Error {
   constructor(item?: string) {
     super(`He doesn't see ${item ?? 'an item'} in this room.`)
@@ -67,4 +74,5 @@ export const customErrorName = new Set([
   'ObserveItemsError',
   'SearchItemsError',
   'StoryPenaltyError',
+  'SolveItemError',
 ])
