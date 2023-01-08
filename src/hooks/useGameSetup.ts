@@ -11,7 +11,6 @@ export const useGameSetup = () => {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    if (isReady) return
     const initTask = async () => {
       await dataLoaderService.setStoryMapping()
       gameStore.registerFunctionsMapping(1, openItem01Modal)
