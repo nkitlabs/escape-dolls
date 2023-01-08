@@ -55,7 +55,7 @@ const CustomApp = ({ Component, emotionCache = clientSideEmotionCache, pageProps
           <MaterialThemeProvider theme={theme}>
             <EmotionThemeProvider theme={theme}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <CustomStackbarProvider hideIconVariant={true}>
+                <CustomStackbarProvider hideIconVariant>
                   <CssBaseline />
                   <GlobalDialog />
                   <Root>

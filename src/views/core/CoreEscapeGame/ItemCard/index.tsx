@@ -18,9 +18,14 @@ export const ItemCard = observer(({ item, onClick }: Props) => {
   const handleClick = () => {
     onClick?.()
   }
-  const isTicked = useMemo(() => {
-    return gameStore.selectedItems.has(item.key)
-  }, [gameStore.selectedItems.size])
+  const isTicked = useMemo(
+    () => {
+      return gameStore.selectedItems.has(item.key)
+    },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [gameStore.selectedItems.size],
+  )
 
   return (
     <ItemCardWrapper onClick={handleClick}>

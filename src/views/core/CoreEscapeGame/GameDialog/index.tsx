@@ -10,9 +10,13 @@ import { DialogContentWrapper } from './components'
 
 export const GameDialog = observer(() => {
   const [currentDialogId, setCurrentDialogId] = useState(0)
-  useEffect(() => {
-    setCurrentDialogId(gameStore.dialogs.length - 1)
-  }, [gameStore.dialogs.length])
+  useEffect(
+    () => {
+      setCurrentDialogId(gameStore.dialogs.length - 1)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [gameStore.dialogs.length],
+  )
 
   return (
     <Stack gap={1}>

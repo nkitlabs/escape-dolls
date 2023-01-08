@@ -21,12 +21,11 @@ export const EncryptData = () => {
     }
     const reader = new FileReader()
     reader.onload = () => {
-      let newData: string | undefined
       if (!isString(reader.result)) {
-        setInputData(newData)
+        setInputData(undefined)
         return
       }
-      newData = Buffer.from(reader.result).toString('base64')
+      const newData = Buffer.from(reader.result).toString('base64')
       setInputData(newData)
     }
     reader.readAsDataURL(file)
