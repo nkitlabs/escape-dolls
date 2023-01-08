@@ -6,9 +6,7 @@
 .pnp.js
 
 public/data/draft
-
-src/data
-public/data
+public/data/info/story-mapping-dev.json
 src/views/unused
 
 # testing
