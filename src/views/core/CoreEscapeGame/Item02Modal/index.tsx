@@ -30,7 +30,7 @@ const PADS = '123456789*0#'
 export const Item02Modal = observer(({ name, description, prefixKey }: Item02ModalProps) => {
   const { pushErrorSnackbar } = useCustomSnackbar()
   const [isLoading, setIsLoading] = useState(false)
-  const [password, setPassword] = useState('123456')
+  const [password, setPassword] = useState('')
   const onClickPad = (key: string) => {
     if (key === '*') return () => setPassword('')
     if (key === '#')
