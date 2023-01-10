@@ -68,31 +68,31 @@ export const LandingPage = observer(() => {
   if (downSm) {
     return (
       <LandingWrapper>
-        <Box height={96} visibility="hidden"></Box>
+        {/* <Box height={96} visibility="hidden"></Box> */}
         <Stack justifyContent="center" alignItems="center" gap={4}>
           <Typography variant="h4">Escape - Dolls</Typography>
           <PlayButton variant="contained" size="large" onClick={onClickPlay} disabled={!isReady}>
             Play
           </PlayButton>
         </Stack>
-        <StyledButton variant="contained" size="large">
+        {/* <StyledButton variant="contained" size="large">
           Donate
-        </StyledButton>
+        </StyledButton> */}
       </LandingWrapper>
     )
   }
   return (
     <LandingWrapper>
-      <Box height={96} visibility="hidden"></Box>
+      {/* <Box height={96} visibility="hidden"></Box> */}
       <Stack justifyContent="center" alignItems="center" gap={4}>
         <Typography variant="h1">Escape - Dolls</Typography>
         <PlayButton variant="contained" size="large" onClick={onClickPlay}>
           Play
         </PlayButton>
       </Stack>
-      <StyledButton variant="contained" size="large">
+      {/* <StyledButton variant="contained" size="large">
         Donate
-      </StyledButton>
+      </StyledButton> */}
     </LandingWrapper>
   )
 })
