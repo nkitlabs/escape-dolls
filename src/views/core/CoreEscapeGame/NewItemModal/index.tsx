@@ -31,14 +31,7 @@ export const NewItemModal = observer(({ newItems }: NewItemModalProps) => {
     <ModalWrapper>
       <Stack alignItems="center">
         <Header>{`You found: ${newItems.length} ${newItems.length > 1 ? 'items' : 'item'}`}</Header>
-        {downSm ? (
-          <>
-            <Header>{`${newItems[id].name ?? 'an undefined object'}`}</Header>
-            <Header>{`${id + 1}/${newItems.length}`}</Header>
-          </>
-        ) : (
-          <Header>{`${newItems[id].name ?? 'an undefined object'} (${id + 1}/${newItems.length})`}</Header>
-        )}
+        <Header>{`${newItems[id].name ?? 'an undefined object'}`}</Header>
       </Stack>
       <Stack gap={1} alignItems="center" px={3}>
         <img src={newItems[id].image} height={downSm ? 120 : 240} />
@@ -46,13 +39,7 @@ export const NewItemModal = observer(({ newItems }: NewItemModalProps) => {
           {newItems[id].description}
         </Typography>
         {newItems.length > 1 && (
-          <PreviousNextButtons
-            disabledLeft={id <= 0}
-            disabledRight={id >= newItems.length - 1}
-            onClickLeft={() => id > 0 && setId((value) => value - 1)}
-            onClickRight={() => id < newItems.length - 1 && setId((value) => value + 1)}
-            darkColor
-          />
+          <PreviousNextButtons currentPage={id} setCurrentPage={setId} maxPage={newItems.length} darkColor />
         )}
       </Stack>
       <Stack gap={2} alignItems="center">

@@ -22,12 +22,9 @@ export const GameDialog = observer(() => {
     <Stack gap={1}>
       <Stack direction="row" gap={2} justifyContent="center">
         <PreviousNextButtons
-          disabledLeft={currentDialogId <= 0}
-          disabledRight={currentDialogId >= gameStore.dialogs.length - 1}
-          onClickLeft={() => currentDialogId > 0 && setCurrentDialogId((value) => value - 1)}
-          onClickRight={() =>
-            currentDialogId < gameStore.dialogs.length - 1 && setCurrentDialogId((value) => value + 1)
-          }
+          currentPage={currentDialogId}
+          setCurrentPage={setCurrentDialogId}
+          maxPage={gameStore.dialogs.length}
         />
       </Stack>
       <DialogContentWrapper key={`dialog-content-${gameStore.dialogs.length}`} variant="body1">
