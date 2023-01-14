@@ -5,8 +5,6 @@ import { useBreakpoints } from 'hooks/useBreakpoints'
 
 import { timerStore } from 'stores/timerStore'
 
-import { displayTimer } from 'utils/utils'
-
 import { GameDialog } from 'views/core/CoreEscapeGame/GameDialog'
 import { ObservableItems } from 'views/core/CoreEscapeGame/ObservableItems'
 import { SearchItem } from 'views/core/CoreEscapeGame/SearchItem'
@@ -20,7 +18,7 @@ export const CoreEscapeGame = observer(() => {
         <Stack gap={1}>
           <Typography variant="body1">Objective: Escape from the locked room.</Typography>
           <Typography variant="body2" color="text.secondary">
-            {displayTimer(timerStore.timer)}
+            {timerStore.displayTimer}
           </Typography>
         </Stack>
         <Stack mx="auto">
@@ -41,7 +39,7 @@ export const CoreEscapeGame = observer(() => {
           <Stack direction="row" gap={4}>
             <Stack justifyContent="center" gap={2}>
               <Typography variant="body1" color="text.secondary">
-                {displayTimer(timerStore.timer)}
+                {timerStore.displayTimer}
               </Typography>
               <img src="/static/escape-dolls-room.png" width={240} style={{ borderRadius: 16 }} />
             </Stack>
@@ -70,7 +68,7 @@ export const CoreEscapeGame = observer(() => {
         <Stack>
           <Typography variant="h6">Objective: Escape from the locked room.</Typography>
           <Typography variant="body1" color="text.secondary">
-            {displayTimer(timerStore.timer)}
+            {timerStore.displayTimer}
           </Typography>
         </Stack>
         <SearchItem />

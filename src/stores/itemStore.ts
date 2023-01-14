@@ -48,6 +48,12 @@ export class ItemStore {
   public clearSelectedItems = () => {
     this.selectedItems.clear()
   }
+
+  public clear = () => {
+    this.itemKeywordToName = {}
+    this.existingItems = []
+    this.selectedItems = new Set()
+  }
 }
 
 export const itemStore = new ItemStore()

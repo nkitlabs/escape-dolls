@@ -4,7 +4,7 @@ export const Header = styled(Typography)(({ theme }) => ({
   ...theme.typography.h6,
   fontWeight: 'bold',
   color: theme.palette.primary.darken,
-  align: 'center',
+  textAlign: 'center',
 }))
 
 export const ModalWrapper = styled(Stack)(({ theme }) => ({

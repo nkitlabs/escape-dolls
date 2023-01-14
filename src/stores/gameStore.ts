@@ -38,6 +38,13 @@ export class GameStore {
   public registerFunctionsMapping = (id: number, f: (params: string[]) => unknown) => {
     this.functionMapping[id] = f
   }
+
+  public clear = () => {
+    this.dialogs = []
+    this.imgRecord = {}
+    this.storyRecord = {}
+    this.dialogMapping = {}
+  }
 }
 
 export const gameStore = new GameStore()

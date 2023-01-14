@@ -1,5 +1,3 @@
-import { TIME_LIMIT } from 'types/constants'
-
 import { base64ToBinary } from 'utils/cryptography'
 import { REGEX_METADATA_FILE_PREFIX } from 'utils/regex'
 
@@ -33,31 +31,13 @@ export const downloadData = (data: string, filename?: string): void => {
   link.click()
 }
 
-/**
- * display time with formatter.
- * @param timer actual timer.
- * @param timeLimit timeLimit of the game.
- * @returns a string represents a time used/left.
- */
-export const displayTimer = (timer: number, timeLimit: number = TIME_LIMIT): string => {
-  if (timer <= timeLimit) {
-    const left = timeLimit - timer
-    const hrLeft = Math.floor(left / 3600)
-    const minLeft = Math.floor((left % 3600) / 60)
-      .toString()
-      .padStart(2, '0')
-    const secLeft = (left % 60).toString().padStart(2, '0')
-    if (left >= 3600) return `Time left: ${hrLeft}:${minLeft}:${secLeft} h`
-    else if (left >= 60) return `Time left: ${minLeft}:${secLeft} min`
-    else return `Time left: ${secLeft} sec`
-  }
-
-  const hrUsed = Math.floor(timer / 3600)
-  const minUsed = Math.floor((timer % 3600) / 60)
+export const formatSeconds = (seconds: number) => {
+  const hrs = Math.floor(seconds / 3600)
+  const mins = Math.floor((seconds % 3600) / 60)
     .toString()
     .padStart(2, '0')
-  const secUsed = (timer % 60).toString().padStart(2, '0')
-  if (timer >= 3600) return `Time used: ${hrUsed}:${minUsed}:${secUsed} h`
-  else if (timer >= 60) return `Time used: ${minUsed}:${secUsed} min`
-  else return `Time used: ${secUsed} sec`
+  const secs = (seconds % 60).toString().padStart(2, '0')
+  if (seconds >= 3600) return `${hrs}:${mins}:${secs} h`
+  else if (seconds >= 60) return `${mins}:${secs} min`
+  else return `${secs} sec`
 }

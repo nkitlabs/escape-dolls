@@ -1,5 +1,9 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 
+import { TIME_LIMIT } from 'types/constants'
+
+import { formatSeconds } from 'utils/utils'
+
 export class TimerStore {
   private _timeIntervalSetter: NodeJS.Timer
 
@@ -15,7 +19,7 @@ export class TimerStore {
         this.timer += 1
       })
     }, 1000)
-    this.timeLimit = 3600
+    this.timeLimit = TIME_LIMIT
     makeAutoObservable(this)
   }
 
@@ -33,10 +37,25 @@ export class TimerStore {
     }, 1000)
   }
 
+  public stopTimer() {
+    if (this._timeIntervalSetter) {
+      clearInterval(this._timeIntervalSetter)
+    }
+  }
+
   public addTimer(n: number) {
     this.timer += n
     this.countPenalty += 1
     this.totalPenalty += n
+  }
+
+  public get displayTimer() {
+    if (this.timer <= this.timeLimit) {
+      const left = this.timeLimit - this.timer
+      return `Time left: ${formatSeconds(left)}`
+    }
+
+    return `Time used: ${formatSeconds(this.timer)}`
   }
 }
 

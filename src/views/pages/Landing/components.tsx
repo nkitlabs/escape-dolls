@@ -36,19 +36,3 @@ export const LandingWrapper = styled(Stack)(() => ({
     },
   },
 }))
-
-export const EndingPageWrapper = styled(Stack)(({ theme }) => ({
-  height: '100vh',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: theme.spacing(2),
-  animation: 'fade-in 1.5s linear',
-  '@keyframes fade-in': {
-    '0%': {
-      opacity: 0,
-    },
-    '100%': {
-      opacity: 1,
-    },
-  },
-}))

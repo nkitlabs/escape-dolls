@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useSnackbar } from 'notistack'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useBreakpoints } from 'hooks/useBreakpoints'
 import { useGameSetup } from 'hooks/useGameSetup'
@@ -9,11 +9,14 @@ import { useGameSetup } from 'hooks/useGameSetup'
 import { gameService } from 'services/gameService'
 
 import { gameStore } from 'stores/gameStore'
+import { itemStore } from 'stores/itemStore'
 import { timerStore } from 'stores/timerStore'
+
+import { Summary } from 'views/pages/Landing/Summary'
 
 import { CoreEscapeGame } from 'views/core/CoreEscapeGame'
 
-import { EndingPageWrapper, LandingWrapper, PlayButton } from './components'
+import { LandingWrapper, PlayButton } from './components'
 
 export const LandingPage = observer(() => {
   const { isReady } = useGameSetup()
@@ -24,17 +27,16 @@ export const LandingPage = observer(() => {
 
   const onEndGame = (_params: string[]) => {
     setIsEnded(true)
+    timerStore.stopTimer()
+    gameStore.clear()
+    itemStore.clear()
   }
   gameStore.registerFunctionsMapping(3, onEndGame)
 
-  useEffect(() => {
-    if (isEnded) {
-      setTimeout(() => {
-        setIsEnded(false)
-        setPlaying(false)
-      }, 5000)
-    }
-  }, [isEnded])
+  const onClickBackToLanding = () => {
+    setIsEnded(false)
+    setPlaying(false)
+  }
 
   const onClickPlay = async () => {
     const result = await gameService.startGame()
@@ -53,14 +55,11 @@ export const LandingPage = observer(() => {
 
   if (isEnded)
     return (
-      <EndingPageWrapper>
-        <Typography variant="h2" align="center">
-          Congratulations
-        </Typography>
-        <Typography variant="body1" align="center">
-          You help him to escape from the room.
-        </Typography>
-      </EndingPageWrapper>
+      <Summary
+        timeUsed={timerStore.timer}
+        totalPenalty={timerStore.totalPenalty}
+        onClickBackToLanding={onClickBackToLanding}
+      />
     )
 
   if (playing) return <CoreEscapeGame />
