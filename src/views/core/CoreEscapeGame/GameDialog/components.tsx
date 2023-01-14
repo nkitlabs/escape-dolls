@@ -39,3 +39,8 @@ export const DialogContentWrapper = styled(Typography)(({ theme }) => ({
     height: 240,
   },
 }))
+
+export const ClickableText = styled(Typography)(() => ({
+  textDecoration: 'underline',
+  cursor: 'pointer',
+}))
