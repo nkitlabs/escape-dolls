@@ -7,6 +7,7 @@ import { useCustomSnackbar } from 'hooks/useCustomSnackbar'
 import { gameService } from 'services/gameService'
 
 import { gameStore } from 'stores/gameStore'
+import { itemStore } from 'stores/itemStore'
 
 import { ItemCard } from 'views/core/CoreEscapeGame/ItemCard'
 import { openNewItemModal } from 'views/core/CoreEscapeGame/NewItemModal'
@@ -18,7 +19,7 @@ export const ObservableItems = observer(() => {
   const [isLoading, setIsLoading] = useState(false)
 
   const onClickCombine = async () => {
-    if (gameStore.selectedItems.size <= 1) {
+    if (itemStore.selectedItems.size <= 1) {
       pushMessageSnackbar({ message: 'You have to select at least 2 items to combine them.', messageType: 'error' })
       return
     }
@@ -44,7 +45,7 @@ export const ObservableItems = observer(() => {
   }
 
   const onClickObserve = async () => {
-    if (gameStore.selectedItems.size !== 1) {
+    if (itemStore.selectedItems.size !== 1) {
       pushMessageSnackbar({ message: 'You can only observe an item each time.', messageType: 'error' })
       return
     }
@@ -73,15 +74,15 @@ export const ObservableItems = observer(() => {
     <Stack gap={2} width="100%">
       <Typography variant="body1">Observable Items</Typography>
       <ItemListWrapper>
-        {gameStore.existingItems.map((item) => (
-          <ItemCard item={item} key={`itemCard-${item.key}`} onClick={() => gameStore.toggleSelectedItem(item.key)} />
+        {itemStore.existingItems.map((item) => (
+          <ItemCard item={item} key={`itemCard-${item.key}`} onClick={() => itemStore.toggleSelectedItem(item.key)} />
         ))}
       </ItemListWrapper>
       <Stack direction="row" justifyContent="center" gap={2}>
-        <StyledButton onClick={onClickCombine} disabled={isLoading || gameStore.selectedItems.size < 2}>
+        <StyledButton onClick={onClickCombine} disabled={isLoading || itemStore.selectedItems.size < 2}>
           Combine
         </StyledButton>
-        <StyledButton onClick={onClickObserve} disabled={isLoading || gameStore.selectedItems.size !== 1}>
+        <StyledButton onClick={onClickObserve} disabled={isLoading || itemStore.selectedItems.size !== 1}>
           Observe
         </StyledButton>
       </Stack>

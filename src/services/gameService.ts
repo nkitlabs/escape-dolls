@@ -17,14 +17,15 @@ import { FunctionResult, ItemDetails, ReplaceItemInfo, UpdateNewObjectResult } f
 import { dataLoaderService } from 'services/dataLoaderService'
 
 import { gameStore } from 'stores/gameStore'
+import { itemStore } from 'stores/itemStore'
 
 import { REGEX_ARTICLE, REGEX_METADATA_FILE_PREFIX } from 'utils/regex'
 
 class GameService {
   public combineItems = async (): Promise<FunctionResult<UpdateNewObjectResult>> => {
-    const keyword = 'combine+' + Array.from(gameStore.selectedItems).sort().join('+')
+    const keyword = 'combine+' + Array.from(itemStore.selectedItems).sort().join('+')
     const result = await this.updateNewObject(keyword)
-    gameStore.clearSelectedItems()
+    itemStore.clearSelectedItems()
 
     if (!result.success) {
       console.error('[combineItems]:', result.error.message)
@@ -35,13 +36,13 @@ class GameService {
   }
 
   public observeItem = async (): Promise<FunctionResult<UpdateNewObjectResult>> => {
-    const selectedItem = Array.from(gameStore.selectedItems)[0]
+    const selectedItem = Array.from(itemStore.selectedItems)[0]
     const keyword = 'observe+' + selectedItem
     const result = await this.updateNewObject(keyword)
-    gameStore.clearSelectedItems()
+    itemStore.clearSelectedItems()
 
     if (!result.success) {
-      const objName = gameStore.existingItems.filter((v) => v.key === selectedItem)[0].name ?? 'an undefined object'
+      const objName = itemStore.existingItems.filter((v) => v.key === selectedItem)[0].name ?? 'an undefined object'
       console.error('[observeItems]:', result.error.message)
       const newErr = customErrorName.has(result.error.name) ? new ObserveItemsError(objName) : result.error
       return { ...result, error: newErr }
@@ -51,8 +52,8 @@ class GameService {
 
   public searchItem = async (inputKey: string): Promise<FunctionResult<UpdateNewObjectResult>> => {
     const key = inputKey.trim().replace(REGEX_ARTICLE, '').replace(new RegExp('\\s+'), '-').trim().toLowerCase()
-    if (gameStore.itemKeywordToName[key]) {
-      return { success: false, error: new SearchExistingItemError(gameStore.itemKeywordToName[key]) }
+    if (itemStore.itemKeywordToName[key]) {
+      return { success: false, error: new SearchExistingItemError(itemStore.itemKeywordToName[key]) }
     }
 
     const keyword = 'search+' + key
@@ -140,13 +141,13 @@ class GameService {
       }
 
       // update store at the end
-      gameStore.addExistingItems(updatedItems)
+      itemStore.addExistingItems(updatedItems)
       if (storyInfo.destroyItems) {
       }
-      replaceItemDetails.forEach(({ id, newItem }) => gameStore.replaceItem(id, newItem))
+      replaceItemDetails.forEach(({ id, newItem }) => itemStore.replaceItem(id, newItem))
       destroyItems?.forEach(({ key }) => {
-        const id = gameStore.existingItems.findIndex((v) => v.key === key)
-        gameStore.removeExistingItem(id)
+        const id = itemStore.existingItems.findIndex((v) => v.key === key)
+        itemStore.removeExistingItem(id)
       })
       if (dialogs && dialogs.length > 0) {
         gameStore.addDialog(dialogs)
@@ -185,7 +186,7 @@ class GameService {
 
   private getReplaceItemDetails = async (item: ReplaceItemInfo) => {
     const oldKey = item.oldKey
-    const id = gameStore.existingItems.findIndex((v) => v.key === oldKey)
+    const id = itemStore.existingItems.findIndex((v) => v.key === oldKey)
     if (id === -1) {
       throw new NotFoundError(`item: ${oldKey}`)
     }
@@ -199,7 +200,7 @@ class GameService {
       newImgUrl = result.data
     }
 
-    const { image, name, description } = gameStore.existingItems[id]
+    const { image, name, description } = itemStore.existingItems[id]
     const newItem: ItemDetails = {
       key: item.newKey,
       name: item.newName ?? name,

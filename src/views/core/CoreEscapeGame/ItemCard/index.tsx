@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 
 import { ItemDetails } from 'types/types'
 
-import { gameStore } from 'stores/gameStore'
+import { itemStore } from 'stores/itemStore'
 
 import { SVGWrapper } from 'views/common/SVGWrapper'
 
@@ -20,11 +20,11 @@ export const ItemCard = observer(({ item, onClick }: Props) => {
   }
   const isTicked = useMemo(
     () => {
-      return gameStore.selectedItems.has(item.key)
+      return itemStore.selectedItems.has(item.key)
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [gameStore.selectedItems.size],
+    [itemStore.selectedItems.size],
   )
 
   return (
