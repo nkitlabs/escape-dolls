@@ -9,6 +9,8 @@ import { GameDialog } from 'views/core/CoreEscapeGame/GameDialog'
 import { ObservableItems } from 'views/core/CoreEscapeGame/ObservableItems'
 import { SearchItem } from 'views/core/CoreEscapeGame/SearchItem'
 
+import { HelperButton } from 'views/modals/HelperModal'
+
 export const CoreEscapeGame = observer(() => {
   const { downMd, downSm, downLg } = useBreakpoints()
 
@@ -67,9 +69,12 @@ export const CoreEscapeGame = observer(() => {
       <Stack gap={4} width={downLg ? 450 : 650} justifyContent="center">
         <Stack>
           <Typography variant="h6">Objective: Escape from the locked room.</Typography>
-          <Typography variant="body1" color="text.secondary">
-            {timerStore.displayTimer}
-          </Typography>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="body1" color="text.secondary">
+              {timerStore.displayTimer}
+            </Typography>
+            <HelperButton />
+          </Stack>
         </Stack>
         <SearchItem />
         <ObservableItems />

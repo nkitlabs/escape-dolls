@@ -35,7 +35,7 @@ export const GlobalDialog = observer(() => {
       {!hideHeader && (
         <>
           <StyledDialogTitle>
-            <Typography variant="h6" textAlign="center" flex={1}>
+            <Typography variant="h6" textAlign="center" color="primary.darken" flex={1}>
               {title ?? ''}
             </Typography>
             <StyledCloseIcon onClick={dialogStore.close}>

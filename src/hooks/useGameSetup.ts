@@ -4,8 +4,8 @@ import { dataLoaderService } from 'services/dataLoaderService'
 
 import { gameStore } from 'stores/gameStore'
 
-import { openItem01Modal } from 'views/core/CoreEscapeGame/Item01Modal'
-import { openItem02Modal } from 'views/core/CoreEscapeGame/Item02Modal'
+import { openItem01Modal } from 'views/modals/Item01Modal'
+import { openItem02Modal } from 'views/modals/Item02Modal'
 
 export const useGameSetup = () => {
   const [isReady, setIsReady] = useState(false)

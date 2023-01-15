@@ -10,7 +10,8 @@ import { gameStore } from 'stores/gameStore'
 import { itemStore } from 'stores/itemStore'
 
 import { ItemCard } from 'views/core/CoreEscapeGame/ItemCard'
-import { openNewItemModal } from 'views/core/CoreEscapeGame/NewItemModal'
+
+import { openNewItemModal } from 'views/modals/NewItemModal'
 
 import { ItemListWrapper, StyledButton } from './components'
 

@@ -30,7 +30,7 @@ export const StyledDialogTitle = styled('div')(({ theme }) => ({
   alignItems: 'center',
   height: 40,
   padding: theme.spacing(0),
-  marginBottom: theme.spacing(1),
+  margin: theme.spacing(1, 0),
 }))
 
 export const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
@@ -39,9 +39,12 @@ export const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   padding: theme.spacing(0),
 }))
 
-export const StyledCloseIcon = styled(IconButton)(() => ({
+export const StyledCloseIcon = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
-  right: 0,
+  padding: theme.spacing(1),
+  height: 24,
+  width: 24,
+  right: 8,
   top: 0,
   bottom: 0,
 }))

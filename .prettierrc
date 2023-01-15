@@ -20,6 +20,7 @@
     "^views/pages/(.*)$",
     "^views/core/(.*)$",
     "^views/common/(.*)$",
+    "^views/modals/(.*)$",
     "^views/svgs/(.*)$",
     "^themes/(.*)$",
     "^contracts/(.*)$",

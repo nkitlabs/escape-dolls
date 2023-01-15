@@ -10,7 +10,7 @@ import { gameService } from 'services/gameService'
 
 import { gameStore } from 'stores/gameStore'
 
-import { openNewItemModal } from 'views/core/CoreEscapeGame/NewItemModal'
+import { openNewItemModal } from 'views/modals/NewItemModal'
 
 import { SearchButton, SearchTextField } from './components'
 
