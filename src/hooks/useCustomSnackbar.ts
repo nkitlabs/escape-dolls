@@ -30,7 +30,7 @@ export const useCustomSnackbar = () => {
     if (customErrorName.has(error.name) || penaltyParam) {
       const penalty = penaltyParam ?? 10
       errorMsg = `${error.message} Penalty ${timerStore.timer > timerStore.timeLimit ? '+' : '-'}${penalty} second`
-      timerStore.addTimer(penalty)
+      timerStore.addPenalty(penalty)
     } else {
       errorMsg = 'Something went wrong, please contact an admin.'
     }

@@ -43,7 +43,7 @@ export class TimerStore {
     }
   }
 
-  public addTimer(n: number) {
+  public addPenalty(n: number) {
     this.timer += n
     this.countPenalty += 1
     this.totalPenalty += n
