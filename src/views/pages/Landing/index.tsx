@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material'
+import { Link, Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -17,7 +17,7 @@ import { Summary } from 'views/pages/Landing/Summary'
 
 import { CoreEscapeGame } from 'views/core/CoreEscapeGame'
 
-import { LandingWrapper, PlayButton } from './components'
+import { LandingWrapper, PlayButton, SupportUsTypography } from './components'
 
 export const LandingPage = observer(() => {
   const { isReady } = useGameSetup()
@@ -70,31 +70,39 @@ export const LandingPage = observer(() => {
   if (downSm) {
     return (
       <LandingWrapper>
-        {/* <Box height={96} visibility="hidden"></Box> */}
-        <Stack justifyContent="center" alignItems="center" gap={4}>
+        <Stack justifyContent="center" alignItems="center" gap={3}>
           <Typography variant="h4">Escape - Dolls</Typography>
           <PlayButton variant="contained" size="large" onClick={onClickPlay} disabled={!isReady}>
             Play
           </PlayButton>
+          <Link
+            href={'https://www.buymeacoffee.com/kzstudiopr4'}
+            target="_blank"
+            rel="noopenner noreferrer"
+            sx={{ display: 'contents' }}
+          >
+            <SupportUsTypography>Support Us</SupportUsTypography>
+          </Link>
         </Stack>
-        {/* <StyledButton variant="contained" size="large">
-          Donate
-        </StyledButton> */}
       </LandingWrapper>
     )
   }
   return (
     <LandingWrapper>
-      {/* <Box height={96} visibility="hidden"></Box> */}
       <Stack justifyContent="center" alignItems="center" gap={4}>
         <Typography variant="h1">Escape - Dolls</Typography>
         <PlayButton variant="contained" size="large" onClick={onClickPlay}>
           Play
         </PlayButton>
+        <Link
+          href={'https://www.buymeacoffee.com/kzstudiopr4'}
+          target="_blank"
+          rel="noopenner noreferrer"
+          sx={{ display: 'contents' }}
+        >
+          <SupportUsTypography>Support Us</SupportUsTypography>
+        </Link>
       </Stack>
-      {/* <StyledButton variant="contained" size="large">
-        Donate
-      </StyledButton> */}
     </LandingWrapper>
   )
 })
