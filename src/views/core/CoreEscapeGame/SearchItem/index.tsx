@@ -10,6 +10,7 @@ import { gameService } from 'services/gameService'
 
 import { gameStore } from 'stores/gameStore'
 
+import { HelperButton } from 'views/modals/HelperModal'
 import { openNewItemModal } from 'views/modals/NewItemModal'
 
 import { SearchButton, SearchTextField } from './components'
@@ -51,7 +52,10 @@ export const SearchItem = observer(() => {
 
   return (
     <Stack gap={2}>
-      <Typography variant="body1">Search</Typography>
+      <Stack direction="row" gap={1} alignItems="center">
+        <Typography variant="body1">Search</Typography>
+        <HelperButton />
+      </Stack>
       <Stack direction="row" gap={2}>
         <SearchTextField fullWidth onChange={(e) => setItem(e.target.value)} value={item}></SearchTextField>
         <SearchButton size="small" onClick={onClickSearch} disabled={isLoading || !item}>

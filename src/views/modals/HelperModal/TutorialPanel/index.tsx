@@ -22,7 +22,7 @@ export const TutorialPanel = ({ onClickBack }: Props) => {
         <Typography>
           You may ask for hints if you struggle with the situation in the game, but penalty will be applied as well.
         </Typography>
-        <Typography>Note that penalty will be different depends on actions or the hint you will receive.</Typography>
+        <Typography>Note that penalty will be different depends on actions or hints you will receive.</Typography>
         <Typography fontWeight="bold">Enjoy.</Typography>
       </TutorialTextlWrapper>
       <Button onClick={onClickBack} sx={{ width: 160 }}>

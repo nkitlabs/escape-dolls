@@ -9,6 +9,7 @@ import { useGameSetup } from 'hooks/useGameSetup'
 import { gameService } from 'services/gameService'
 
 import { gameStore } from 'stores/gameStore'
+import { hintStore } from 'stores/hintStore'
 import { itemStore } from 'stores/itemStore'
 import { timerStore } from 'stores/timerStore'
 
@@ -28,8 +29,6 @@ export const LandingPage = observer(() => {
   const onEndGame = (_params: string[]) => {
     setIsEnded(true)
     timerStore.stopTimer()
-    gameStore.clear()
-    itemStore.clear()
   }
   gameStore.registerFunctionsMapping(3, onEndGame)
 
@@ -39,8 +38,12 @@ export const LandingPage = observer(() => {
   }
 
   const onClickPlay = async () => {
+    gameStore.clear()
+    itemStore.clear()
+    hintStore.clear()
     const result = await gameService.startGame()
     if (result.success) {
+      hintStore.addDisplayedHints()
       timerStore.resetTimer()
       setPlaying(true)
     } else {

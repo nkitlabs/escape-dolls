@@ -5,6 +5,8 @@ export const IconWrapper = styled(Box)(() => ({
   transitionProperty: 'all',
   transitionDuration: '400ms',
   transitionTimingFunction: 'ease',
+  width: 20,
+  height: 20,
   cursor: 'pointer',
   '&:hover': {
     '& div.icon-normal': {

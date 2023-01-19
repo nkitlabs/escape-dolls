@@ -4,6 +4,9 @@ import { createTheme } from '@mui/material/styles'
  * * The theme from style guide
  */
 const theme = createTheme({
+  zIndex: {
+    snackbar: 3500,
+  },
   breakpoints: {
     values: {
       xs: 320,

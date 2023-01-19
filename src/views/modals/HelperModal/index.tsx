@@ -10,6 +10,7 @@ import { SVGWrapper } from 'views/common/SVGWrapper'
 import { IconWrapper, ModalWrapper, StyledCloseIcon } from 'views/modals/HelperModal//components'
 import { HelperMainPanel } from 'views/modals/HelperModal/HelperMainPanel'
 
+import { HintPanel } from './HintPanel'
 import { TutorialPanel } from './TutorialPanel'
 
 export const openHelperModal = () => {
@@ -63,7 +64,9 @@ export const HelperModal = observer(() => {
       </Stack>
       {isShowTutorialPanel ? (
         <TutorialPanel onClickBack={() => setIsShowTutorialPanel(false)} />
-      ) : isShowHintPanel ? null : (
+      ) : isShowHintPanel ? (
+        <HintPanel onClickBack={() => setIsShowHintPanel(false)} />
+      ) : (
         <HelperMainPanel
           onClickTutorial={() => setIsShowTutorialPanel(true)}
           onClickHint={() => setIsShowHintPanel(true)}

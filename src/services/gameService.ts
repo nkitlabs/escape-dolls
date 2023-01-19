@@ -17,6 +17,7 @@ import { FunctionResult, ItemDetails, ReplaceItemInfo, UpdateNewObjectResult } f
 import { dataLoaderService } from 'services/dataLoaderService'
 
 import { gameStore } from 'stores/gameStore'
+import { hintStore } from 'stores/hintStore'
 import { itemStore } from 'stores/itemStore'
 
 import { REGEX_ARTICLE, REGEX_METADATA_FILE_PREFIX } from 'utils/regex'
@@ -139,6 +140,10 @@ class GameService {
       if (storyInfo.replaceItems) {
         replaceItemDetails = await Promise.all(storyInfo.replaceItems.map((v) => this.getReplaceItemDetails(v)))
       }
+
+      // update hintStore
+      hintStore.addPossibleHints(storyInfo.hints ?? [])
+      hintStore.removePossibleHints(storyInfo.removeHintKeys ?? [])
 
       // update store at the end
       itemStore.addExistingItems(updatedItems)

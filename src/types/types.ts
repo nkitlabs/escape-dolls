@@ -26,6 +26,13 @@ export type FunctionMappingInfo = {
   params: string[]
 }
 
+export type HintInfo = {
+  key: string
+  hintDialogs: string[]
+  penalty?: number
+  isSpoilSolution?: boolean
+}
+
 export type StoryInfo = {
   key: string
   name?: string
@@ -35,6 +42,8 @@ export type StoryInfo = {
   destroyItems?: DestroyItemInfo[]
   functionMapping?: FunctionMappingInfo
   dialogs?: string[]
+  hints?: HintInfo[]
+  removeHintKeys?: string[]
   penalty?: number
 }
 
