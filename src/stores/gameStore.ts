@@ -4,18 +4,13 @@ import { StoryInfo } from 'types/types'
 
 export class GameStore {
   public dialogs: string[][]
-  public dialogMapping: Record<string, string[]>
-  public imgRecord: Record<string, string>
-  public storyRecord: Record<string, StoryInfo>
-  public functionMapping: Record<number, (params: string[]) => unknown>
+  public imgRecord: Record<string, string> // imgKey -> url
+  public storyRecord: Record<string, StoryInfo> // storyKey -> info
+  public functionMapping: Record<number, (params: string[]) => unknown> // id -> params
 
   constructor() {
-    this.dialogs = []
-    this.imgRecord = {}
-    this.storyRecord = {}
-    this.dialogMapping = {}
+    this.clear()
     this.functionMapping = {}
-
     makeAutoObservable(this)
   }
 
@@ -31,10 +26,6 @@ export class GameStore {
     this.imgRecord[imgKey] = imgUrl
   }
 
-  public addDialogMapping = (key: string, texts: string[]) => {
-    this.dialogMapping[key] = texts
-  }
-
   public registerFunctionsMapping = (id: number, f: (params: string[]) => unknown) => {
     this.functionMapping[id] = f
   }
@@ -43,7 +34,6 @@ export class GameStore {
     this.dialogs = []
     this.imgRecord = {}
     this.storyRecord = {}
-    this.dialogMapping = {}
   }
 }
 

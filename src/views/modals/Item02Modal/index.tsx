@@ -20,7 +20,7 @@ type Item02ModalProps = {
 
 export const openItem02Modal = (params: string[]) => {
   dialogStore.open(() => <Item02Modal name={params[0]} description={params[1]} prefixKey={params[2]} />, {
-    hideHeader: true,
+    isHeaderHidden: true,
     borderRadius: 16,
   })
 }

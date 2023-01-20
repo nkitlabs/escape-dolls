@@ -18,7 +18,7 @@ type NewItemModalProps = {
 
 export const openNewItemModal = ({ newItems }: NewItemModalProps) => {
   dialogStore.open(() => <NewItemModal newItems={newItems} />, {
-    hideHeader: true,
+    isHeaderHidden: true,
     borderRadius: 16,
   })
 }

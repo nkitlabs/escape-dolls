@@ -5,12 +5,12 @@ import { HintInfo } from 'types/types'
 export class HintStore {
   public displayedHints: HintInfo[]
   public possibleHints: HintInfo[]
-  public unusedKeys: Set<string>
+  public obsoleteKeys: Set<string>
 
   constructor() {
     this.displayedHints = []
     this.possibleHints = []
-    this.unusedKeys = new Set()
+    this.obsoleteKeys = new Set()
 
     makeAutoObservable(this)
   }
@@ -23,13 +23,13 @@ export class HintStore {
   }
 
   public addPossibleHints = (hints: HintInfo[]) => {
-    const activeHints = hints.filter((hint) => !this.unusedKeys.has(hint.key))
+    const activeHints = hints.filter((hint) => !this.obsoleteKeys.has(hint.key))
     this.possibleHints.push(...activeHints)
   }
 
   public removePossibleHints = (keys: string[]) => {
     for (const key of keys) {
-      this.unusedKeys.add(key)
+      this.obsoleteKeys.add(key)
       const oldHintIndex = this.possibleHints.findIndex((oldHint) => oldHint.key === key)
       if (oldHintIndex !== -1) this.possibleHints.splice(oldHintIndex, 1)
     }
@@ -38,10 +38,11 @@ export class HintStore {
   public clear = () => {
     this.displayedHints = []
     this.possibleHints = []
+    this.obsoleteKeys.clear()
   }
 
   public get nextHint() {
-    return this.possibleHints?.[0]
+    return this.possibleHints[0]
   }
 }
 

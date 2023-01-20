@@ -17,7 +17,7 @@ type Item01ModalProps = {
 
 export const openItem01Modal = (params: string[]) => {
   dialogStore.open(() => <Item01Modal name={params[0]} img={params[1]} description={params[2]} />, {
-    hideHeader: true,
+    isHeaderHidden: true,
     borderRadius: 16,
   })
 }

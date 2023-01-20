@@ -112,7 +112,6 @@ class GameService {
       if (isRepeated) {
         if (dialogs && dialogs.length > 0) {
           gameStore.addDialog(dialogs)
-          chainKeys.forEach((key) => gameStore.addDialogMapping(key, dialogs))
         }
         return { success: true, data: { isRepeated: isRepeated, key: storyInfo.key, functionMapping: functionMapping } }
       }
@@ -157,7 +156,6 @@ class GameService {
       if (dialogs && dialogs.length > 0) {
         gameStore.addDialog(dialogs)
         chainKeys.forEach((key) => {
-          gameStore.addDialogMapping(key, dialogs)
           gameStore.addStoryInfo(key, storyInfo)
         })
       }

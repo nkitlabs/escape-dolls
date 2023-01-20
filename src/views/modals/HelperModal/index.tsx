@@ -16,7 +16,7 @@ import { TutorialPanel } from './TutorialPanel'
 export const openHelperModal = () => {
   dialogStore.open(() => <HelperModal />, {
     borderRadius: 16,
-    hideHeader: true,
+    isHeaderHidden: true,
   })
 }
 

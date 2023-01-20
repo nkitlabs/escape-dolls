@@ -78,7 +78,7 @@ export const LandingPage = observer(() => {
           <Link
             href={'https://www.buymeacoffee.com/kzstudiopr4'}
             target="_blank"
-            rel="noopenner noreferrer"
+            rel="noopener noreferrer"
             sx={{ display: 'contents' }}
           >
             <SupportUsTypography>Support Us</SupportUsTypography>
@@ -97,7 +97,7 @@ export const LandingPage = observer(() => {
         <Link
           href={'https://www.buymeacoffee.com/kzstudiopr4'}
           target="_blank"
-          rel="noopenner noreferrer"
+          rel="noopener noreferrer"
           sx={{ display: 'contents' }}
         >
           <SupportUsTypography>Support Us</SupportUsTypography>

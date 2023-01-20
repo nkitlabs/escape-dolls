@@ -12,7 +12,7 @@ export const GlobalDialog = observer(() => {
     title,
     isContentCenter,
     divider = false,
-    hideHeader,
+    isHeaderHidden,
     backgroundColor,
     borderRadius,
     ...restProps
@@ -32,7 +32,7 @@ export const GlobalDialog = observer(() => {
       {...restProps}
       fullWidth
     >
-      {!hideHeader && (
+      {!isHeaderHidden && (
         <>
           <StyledDialogTitle>
             <Typography variant="h6" textAlign="center" color="primary.darken" flex={1}>

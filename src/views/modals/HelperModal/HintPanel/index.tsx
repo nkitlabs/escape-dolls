@@ -25,7 +25,7 @@ export const HintPanel = observer(({ onClickBack }: Props) => {
   }
   const onConfirmDialog = () => {
     setIsShowedConfirmDialog(false)
-    const penalty = hintStore.nextHint.penalty ?? 30
+    const penalty = hintStore.nextHint?.penalty ?? 30
     setTimeout(() => {
       hintStore.addDisplayedHints()
       setHintId(hintStore.displayedHints.length - 1)

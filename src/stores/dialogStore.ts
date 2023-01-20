@@ -5,7 +5,7 @@ export type DialogOptions = Partial<DialogProps> & {
   title?: string
   divider?: boolean
   isContentCenter?: boolean
-  hideHeader?: boolean
+  isHeaderHidden?: boolean
   backgroundColor?: string
   borderRadius?: number
   closeCallback?: () => void
@@ -19,7 +19,7 @@ export class DialogStore {
   private readonly defaultOptions: DialogOptions = {
     divider: false,
     isContentCenter: false,
-    hideHeader: false,
+    isHeaderHidden: false,
     disableEscapeKeyDown: true,
   }
 
