@@ -7,6 +7,7 @@ export const DialogContentWrapper = styled(Typography)(({ theme }) => ({
   overflowY: 'auto',
   whiteSpace: 'pre-wrap',
   animation: 'flash 1.5s linear',
+  wordWrap: 'break-word',
   '&::-webkit-scrollbar': {
     width: 8,
     opacity: 0.5,

@@ -33,7 +33,7 @@ export const CoreEscapeGame = observer(() => {
 
   if (downMd) {
     return (
-      <Stack p={4} gap={2} m="auto">
+      <Stack p={4} gap={2} m="auto" width={704}>
         <Typography variant="h6">Objective: Escape from the locked room.</Typography>
         <Stack gap={2}>
           <Stack direction="row" gap={4}>
@@ -48,9 +48,7 @@ export const CoreEscapeGame = observer(() => {
               <ObservableItems />
             </Stack>
           </Stack>
-          <Stack>
-            <GameDialog />
-          </Stack>
+          <GameDialog />
         </Stack>
       </Stack>
     )
