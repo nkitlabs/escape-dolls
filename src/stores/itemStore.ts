@@ -3,56 +3,60 @@ import { makeAutoObservable } from 'mobx'
 import { ItemDetails } from 'types/types'
 
 export class ItemStore {
-  public itemKeywordToName: Record<string, string>
+  public idToName: Record<string, string>
   public existingItems: ItemDetails[]
-  public selectedItems: Set<string>
+  public selectedIds: Set<string>
 
   constructor() {
-    this.itemKeywordToName = {}
-    this.existingItems = []
-    this.selectedItems = new Set()
-
+    this.clear()
     makeAutoObservable(this)
   }
 
   public addExistingItems = (items: ItemDetails[]) => {
     this.existingItems = items.concat(this.existingItems)
-    items.forEach((item) => item.possibleKeywords?.forEach((v) => (this.itemKeywordToName[v] = item.name)))
-  }
-
-  public removeExistingItem = (id: number) => {
-    const item = this.existingItems[id]
-    item.possibleKeywords?.forEach((v) => {
-      delete this.itemKeywordToName[v]
+    items.map((item) => {
+      for (const id of item.relatedIds ?? []) {
+        this.idToName[id] = item.name
+      }
     })
-    this.existingItems.splice(id, 1)
   }
 
-  public toggleSelectedItem = (key: string) => {
-    this.selectedItems.has(key) ? this.selectedItems.delete(key) : this.selectedItems.add(key)
-  }
-
-  public replaceItem = (id: number, newItem: ItemDetails) => {
-    const oldItem = this.existingItems[id]
-    oldItem.possibleKeywords?.forEach((v) => {
-      delete this.itemKeywordToName[v]
-    })
-
-    this.existingItems[id] = newItem
-    if (this.selectedItems.has(newItem.key)) {
-      this.selectedItems.delete(newItem.key)
+  public removeExistingItem = (index: number) => {
+    const item = this.existingItems[index]
+    for (const id of item.relatedIds ?? []) {
+      delete this.idToName[id]
     }
-    newItem.possibleKeywords?.forEach((v) => (this.itemKeywordToName[v] = newItem.name))
+
+    this.existingItems.splice(index, 1)
+  }
+
+  public toggleSelectedItem = (id: string) => {
+    this.selectedIds.has(id) ? this.selectedIds.delete(id) : this.selectedIds.add(id)
+  }
+
+  public replaceItem = (index: number, newItem: ItemDetails) => {
+    const oldItem = this.existingItems[index]
+    for (const id of oldItem.relatedIds ?? []) {
+      delete this.selectedIds[id]
+    }
+
+    this.existingItems[index] = newItem
+    if (this.selectedIds.has(newItem.id)) {
+      this.selectedIds.delete(newItem.id)
+    }
+    for (const id of newItem.relatedIds ?? []) {
+      this.idToName[id] = newItem.name
+    }
   }
 
   public clearSelectedItems = () => {
-    this.selectedItems.clear()
+    this.selectedIds.clear()
   }
 
   public clear = () => {
-    this.itemKeywordToName = {}
+    this.idToName = {}
     this.existingItems = []
-    this.selectedItems = new Set()
+    this.selectedIds = new Set()
   }
 }
 

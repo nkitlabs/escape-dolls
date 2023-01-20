@@ -10,62 +10,62 @@ export type FunctionResult<T = undefined> =
     }
 
 export type ReplaceItemInfo = {
-  oldKey: string
-  newKey: string
+  oldId: string
+  newId: string
   newDescription?: string
   newName?: string
   hasNewImage?: boolean
 }
 
 export type DestroyItemInfo = {
-  key: string
+  id: string
 }
 
-export type FunctionMappingInfo = {
+export type TriggerFunctionIdInfo = {
   id: number
   params: string[]
 }
 
 export type HintInfo = {
-  key: string
+  id: string
   hintDialogs: string[]
   penalty?: number
   isSpoilSolution?: boolean
 }
 
 export type StoryInfo = {
-  key: string
+  id: string
   name?: string
-  mapKeyword?: string
+  mapToId?: string
   newItems?: ItemDetails[]
   replaceItems?: ReplaceItemInfo[]
   destroyItems?: DestroyItemInfo[]
-  functionMapping?: FunctionMappingInfo
+  triggerFunctionId?: TriggerFunctionIdInfo
   dialogs?: string[]
   hints?: HintInfo[]
-  removeHintKeys?: string[]
+  obsoleteHintIds?: string[]
   penalty?: number
 }
 
 export type GetStoryInfoResult = {
+  id: string
   story: StoryInfo
-  chainKeys: string[]
-  actualKey: string
+  newRelatedIds: string[]
   isRepeated?: boolean
 }
 
-export type UpdateNewObjectResult = {
-  key: string
+export type UpdateNewStoryResult = {
+  id: string
   isRepeated?: boolean
   newItems?: ItemDetails[]
-  functionMapping?: FunctionMappingInfo
+  triggerFunctionId?: TriggerFunctionIdInfo
 }
 
 // always has an image.
 export type ItemDetails = {
-  key: string
+  id: string
   name: string
-  possibleKeywords?: string[]
+  relatedIds?: string[]
   image?: string
   description?: string
 }

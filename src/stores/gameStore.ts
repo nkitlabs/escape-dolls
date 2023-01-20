@@ -4,36 +4,36 @@ import { StoryInfo } from 'types/types'
 
 export class GameStore {
   public dialogs: string[][]
-  public imgRecord: Record<string, string> // imgKey -> url
-  public storyRecord: Record<string, StoryInfo> // storyKey -> info
-  public functionMapping: Record<number, (params: string[]) => unknown> // id -> params
+  public imgIdToUrl: Record<string, string>
+  public storyIdToInfo: Record<string, StoryInfo>
+  public functionIdMapping: Record<number, (params: string[]) => unknown> // id -> params
 
   constructor() {
     this.clear()
-    this.functionMapping = {}
+    this.functionIdMapping = {}
     makeAutoObservable(this)
   }
 
-  public addStoryInfo = (key: string, info: StoryInfo) => {
-    this.storyRecord[key] = info
+  public addStoryInfo = (id: string, info: StoryInfo) => {
+    this.storyIdToInfo[id] = info
   }
 
   public addDialog = (texts: string[]) => {
     this.dialogs.push(texts)
   }
 
-  public addNewImage = (imgKey: string, imgUrl: string) => {
-    this.imgRecord[imgKey] = imgUrl
+  public addNewImage = (imgId: string, imgUrl: string) => {
+    this.imgIdToUrl[imgId] = imgUrl
   }
 
   public registerFunctionsMapping = (id: number, f: (params: string[]) => unknown) => {
-    this.functionMapping[id] = f
+    this.functionIdMapping[id] = f
   }
 
   public clear = () => {
     this.dialogs = []
-    this.imgRecord = {}
-    this.storyRecord = {}
+    this.imgIdToUrl = {}
+    this.storyIdToInfo = {}
   }
 }
 
