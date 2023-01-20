@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-import { KEY_SALT } from 'types/constants'
 import { NotFoundError } from 'types/errors'
 import { FunctionResult, GetStoryInfoResult, StoryInfo } from 'types/types'
 
@@ -79,7 +78,7 @@ class DataLoaderService {
       throw new Error('storyMapping has not been set')
     }
 
-    const filename = getHash(key.concat(KEY_SALT))
+    const filename = getHash(key.concat(process.env.KEY_SALT ?? ''))
     if (!this.storyMapping[filename]) {
       throw new NotFoundError(`file ${key} ${filename}`)
     }

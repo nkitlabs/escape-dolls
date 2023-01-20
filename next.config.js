@@ -31,6 +31,7 @@ const nextConfig = {
   },
   env: {
     APP_ENV: process.env.APP_ENV,
+    KEY_SALT: process.env.KEY_SALT,
   },
   async headers() {
     return [

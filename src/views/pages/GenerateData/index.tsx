@@ -1,11 +1,13 @@
-import { Button } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
+import { useState } from 'react'
 
-import { KEY_SALT } from 'types/constants'
 import { StoryInfo } from 'types/types'
 
 import { encryptWithSalt, getHash, randomIv } from 'utils/cryptography'
+
+import { StyledTextInput } from './components'
 
 const STORY_DATA_FOLDERS = 'data/draft/stories'
 const IMAGE_FOLDERS = 'data/draft/images'
@@ -31,7 +33,8 @@ export const getImageFile = async (filename: string): Promise<string> => {
   return 'data:image/png;base64,' + buffer.toString('base64')
 }
 
-const onClick = async () => {
+const onClick = (salt: string) => async () => {
+  console.log('!!!', salt, process.env.KEY_SALT)
   const storyFilenames = (await getTextFile(`data/draft/01-index-file-story.txt`)).split('\n')
 
   const storyData = await Promise.all(
@@ -41,7 +44,7 @@ const onClick = async () => {
       const buffer = Buffer.from(data)
       const key = obj.key
       const hashedKey = getHash(key)
-      const hashedFilename = getHash(key + KEY_SALT)
+      const hashedFilename = getHash(key + salt)
       const iv = randomIv(8)
       const encryptedData = encryptWithSalt(buffer, hashedKey, iv).toString('base64')
 
@@ -57,7 +60,7 @@ const onClick = async () => {
       const buffer = Buffer.from(data)
       const key = filename.replace('.png', '') + '-img'
       const hashedKey = getHash(key)
-      const hashedFilename = getHash(key + KEY_SALT)
+      const hashedFilename = getHash(key + salt)
       const iv = randomIv(8)
       const encryptedData = encryptWithSalt(buffer, hashedKey, iv).toString('base64')
 
@@ -89,5 +92,15 @@ const onClick = async () => {
 }
 
 export const GenerateDataPage = () => {
-  return <Button onClick={onClick}>Generate Data</Button>
+  const [salt, setSalt] = useState<string>('')
+
+  return (
+    <Stack gap={2} p={2}>
+      <Stack direction="row" gap={2} alignItems="center">
+        <Typography>Salt:</Typography>
+        <StyledTextInput name="salt" onChange={(e) => setSalt(e.target.value)} value={salt} />
+      </Stack>
+      <Button onClick={onClick(salt)}>Generate Data</Button>
+    </Stack>
+  )
 }
