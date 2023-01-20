@@ -1,13 +1,12 @@
 import axios from 'axios'
 
-import { NotFoundError } from 'types/errors'
+import { MAX_RELATED_STORY_ID, STORY_MAPPING_FILE } from 'types/constants'
+import { NotFoundError, customErrorName } from 'types/errors'
 import { FunctionResult, GetStoryInfoResult, StoryInfo } from 'types/types'
 
 import { gameStore } from 'stores/gameStore'
 
 import { decryptWithSalt, getHash } from 'utils/cryptography'
-
-const MAX_CHAIN_KEY = 5
 
 class DataLoaderService {
   public storyMapping: Record<string, string> | undefined = undefined
@@ -15,47 +14,53 @@ class DataLoaderService {
 
   public setStoryMapping = async () => {
     if (this.storyMapping) return
-    const resp = await fetch('data/info/story-mapping.json')
+    const resp = await fetch(STORY_MAPPING_FILE)
     this.storyMapping = await resp.json()
   }
 
-  public getStoryInfo = async (key: string): Promise<FunctionResult<GetStoryInfoResult>> => {
-    let countChain = 0
-    let actualKey = key
-
-    const result: GetStoryInfoResult = {
-      story: { key: actualKey },
-      chainKeys: [],
-      actualKey: key,
-    }
+  public getStoryInfo = async (id: string): Promise<FunctionResult<GetStoryInfoResult>> => {
+    let currentId = id
+    const newRelatedIds: string[] = []
 
     try {
-      while (countChain < MAX_CHAIN_KEY) {
-        if (gameStore.storyRecord[actualKey]) {
-          result.story = gameStore.storyRecord[actualKey]
-          result.isRepeated = true
-          break
+      while (newRelatedIds.length < MAX_RELATED_STORY_ID) {
+        // if already exists, return data with success.
+        if (gameStore.storyIdToInfo[currentId]) {
+          return {
+            success: true,
+            data: {
+              id: gameStore.storyIdToInfo[currentId].id,
+              story: gameStore.storyIdToInfo[currentId],
+              isRepeated: true,
+              newRelatedIds: newRelatedIds,
+            },
+          }
         }
 
-        result.chainKeys.push(actualKey)
-        const storyInfoText = await this.getData(actualKey)
+        // query data
+        newRelatedIds.push(currentId)
+        const storyInfoText = await this.getData(currentId)
         const story = JSON.parse(storyInfoText) as StoryInfo
 
-        if (story.mapKeyword) {
-          actualKey = story.mapKeyword
-        } else {
-          result.story = story
-          result.actualKey = actualKey
-          break
+        // if current id isn't mapped to the new id, return this data with success.
+        if (!story.mapToId) {
+          return {
+            success: true,
+            data: {
+              id: currentId,
+              story: story,
+              isRepeated: false,
+              newRelatedIds: newRelatedIds,
+            },
+          }
         }
-        countChain += 1
+
+        currentId = story.mapToId
       }
 
-      if (countChain === MAX_CHAIN_KEY) return { success: false, error: new Error('chain key is too long') }
-
-      return { success: true, data: result }
+      return { success: false, error: new Error('chain key is too long') }
     } catch (err) {
-      console.error('[getStoryInfo]', err)
+      if (customErrorName.has(err.name)) console.error('[getStoryInfo]', err)
       return { success: false, error: err }
     }
   }
@@ -65,8 +70,9 @@ class DataLoaderService {
       const img = await this.getData(key)
       return { success: true, data: img }
     } catch (err) {
-      console.error('[getImage]:', err)
+      if (customErrorName.has(err.name)) console.error('[getImage]:', err)
       if (err instanceof NotFoundError) {
+        console.error('[getImage]:', err)
         return { success: false, error: new Error(`internal error: ${err.message}`) }
       }
       return { success: false, error: err }
