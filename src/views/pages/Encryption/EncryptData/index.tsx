@@ -10,7 +10,7 @@ import { ContentWrapper, StyledTextInput } from 'views/pages/Encryption/componen
 export const EncryptData = () => {
   const [inputData, setInputData] = useState<undefined | string>(undefined)
   const [inputKey, setInputKey] = useState('')
-  const [encryptedData, setEncrypedData] = useState('')
+  const [encryptedData, setEncryptedData] = useState('')
   const [generatedIV, setGeneratedIV] = useState('')
 
   const onInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +36,7 @@ export const EncryptData = () => {
   }
 
   const onEncrypt = async () => {
-    setEncrypedData('')
+    setEncryptedData('')
     setGeneratedIV('')
 
     if (!inputData || !inputKey) {
@@ -46,7 +46,7 @@ export const EncryptData = () => {
     const iv = randomIv(8)
     const data = encryptWithSalt(Buffer.from(inputData, 'base64'), key, iv)
     setGeneratedIV(iv)
-    setEncrypedData(data.toString('base64'))
+    setEncryptedData(data.toString('base64'))
   }
 
   return (
