@@ -18,9 +18,6 @@ export const StyledDialog = styled(Dialog, {
     alignItems: 'center',
     backgroundColor: backgroundColor ?? theme.palette.primary.lighten,
     borderRadius: borderRadius ?? 16,
-    [theme.breakpoints.down('xs')]: {
-      minWidth: 0,
-    },
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(4, 0),
       gap: theme.spacing(1),

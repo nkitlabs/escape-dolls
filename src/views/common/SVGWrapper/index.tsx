@@ -1,29 +1,4 @@
-import { styled } from '@mui/material'
-import { ReactSVG } from 'react-svg'
-
-type StyledSVGProps = {
-  isFill?: boolean
-  isStroke?: boolean
-  color?: string
-  transitionSecond?: number
-}
-
-const StyledSVG = styled(ReactSVG, {
-  shouldForwardProp: (props: string) =>
-    !['isFill', 'isStroke', 'color', 'height', 'width', 'transitionSecond'].includes(props),
-})<StyledSVGProps>(({ isFill, isStroke, color, transitionSecond }) => ({
-  svg: {
-    stroke: isStroke && (color ?? 'currentColor'),
-    fill: isFill && (color ?? 'currentColor'),
-    path: {
-      stroke: isStroke && (color ?? 'currentColor'),
-      fill: isFill && (color ?? 'currentColor'),
-    },
-    width: '100%',
-    height: '100%',
-    transition: `color ${transitionSecond}s ease`,
-  },
-}))
+import { StyledSVG } from './components'
 
 type Props = {
   src: string
@@ -47,7 +22,7 @@ type Props = {
  * @param fill Svg using fill props for color
  * @param stroke Svg using fill props for color
  * @param rotate the number of degree that svg rotate
- * @param flipX  whether the svg flip side x-axiss
+ * @param flipX  whether the svg flip side x-axis
  * @param flipY  whether the svg flip side y-axis
  * @param className class of svg
  */
