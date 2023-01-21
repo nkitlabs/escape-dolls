@@ -37,7 +37,7 @@ export type StoryInfo = {
   id: string
   name?: string
   mapToId?: string
-  newItems?: ItemDetails[]
+  newItems?: ItemInfo[]
   replaceItems?: ReplaceItemInfo[]
   destroyItems?: DestroyItemInfo[]
   triggerFunctionId?: TriggerFunctionIdInfo
@@ -57,12 +57,12 @@ export type GetStoryInfoResult = {
 export type UpdateNewStoryResult = {
   id: string
   isRepeated?: boolean
-  newItems?: ItemDetails[]
+  newItems?: ItemInfo[]
   triggerFunctionId?: TriggerFunctionIdInfo
 }
 
 // always has an image.
-export type ItemDetails = {
+export type ItemInfo = {
   id: string
   name: string
   relatedIds?: string[]

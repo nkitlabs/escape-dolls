@@ -1,10 +1,10 @@
 import { makeAutoObservable } from 'mobx'
 
-import { ItemDetails } from 'types/types'
+import { ItemInfo } from 'types/types'
 
 export class ItemStore {
   public idToName: Record<string, string>
-  public existingItems: ItemDetails[]
+  public existingItems: ItemInfo[]
   public selectedIds: Set<string>
 
   constructor() {
@@ -12,7 +12,7 @@ export class ItemStore {
     makeAutoObservable(this)
   }
 
-  public addExistingItems = (items: ItemDetails[]) => {
+  public addExistingItems = (items: ItemInfo[]) => {
     this.existingItems = items.concat(this.existingItems)
     items.map((item) => {
       for (const id of item.relatedIds ?? []) {
@@ -34,7 +34,7 @@ export class ItemStore {
     this.selectedIds.has(id) ? this.selectedIds.delete(id) : this.selectedIds.add(id)
   }
 
-  public replaceItem = (index: number, newItem: ItemDetails) => {
+  public replaceItem = (index: number, newItem: ItemInfo) => {
     const oldItem = this.existingItems[index]
     for (const id of oldItem.relatedIds ?? []) {
       delete this.selectedIds[id]

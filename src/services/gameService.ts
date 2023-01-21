@@ -12,7 +12,7 @@ import {
   StoryPenaltyError,
   customErrorName,
 } from 'types/errors'
-import { FunctionResult, ItemDetails, ReplaceItemInfo, UpdateNewStoryResult } from 'types/types'
+import { FunctionResult, ItemInfo, ReplaceItemInfo, UpdateNewStoryResult } from 'types/types'
 
 import { dataLoaderService } from 'services/dataLoaderService'
 
@@ -122,7 +122,7 @@ class GameService {
       }
 
       // get updatedItems
-      let updatedItems: ItemDetails[] = []
+      let updatedItems: ItemInfo[] = []
       if (newItems) {
         const imgResults = await Promise.all(newItems.map(({ id }) => this.updateImage(id)))
         const errorMsg = imgResults.filter((result) => !result.success)
@@ -139,10 +139,10 @@ class GameService {
         }))
       }
 
-      // get replace item details.
-      let replaceItemDetails: { id: number; newItem: ItemDetails }[] = []
+      // get replaced items.
+      let replacedItems: { index: number; newItem: ItemInfo }[] = []
       if (storyInfo.replaceItems) {
-        replaceItemDetails = await Promise.all(storyInfo.replaceItems.map((v) => this.getReplaceItemDetails(v)))
+        replacedItems = await Promise.all(storyInfo.replaceItems.map((info) => this.getReplacedItems(info)))
       }
 
       // update hintStore
@@ -153,7 +153,7 @@ class GameService {
       itemStore.addExistingItems(updatedItems)
       if (storyInfo.destroyItems) {
       }
-      replaceItemDetails.map(({ newItem }, index) => itemStore.replaceItem(index, newItem))
+      replacedItems.map(({ index, newItem }) => itemStore.replaceItem(index, newItem))
       for (const { id } of destroyItems ?? []) {
         const index = itemStore.existingItems.findIndex((item) => item.id === id)
         itemStore.removeExistingItem(index)
@@ -193,10 +193,10 @@ class GameService {
     }
   }
 
-  private getReplaceItemDetails = async (item: ReplaceItemInfo) => {
+  private getReplacedItems = async (item: ReplaceItemInfo) => {
     const oldId = item.oldId
-    const id = itemStore.existingItems.findIndex((item) => item.id === oldId)
-    if (id === -1) {
+    const index = itemStore.existingItems.findIndex((item) => item.id === oldId)
+    if (index === -1) {
       throw new NotFoundError(`item: ${oldId}`)
     }
 
@@ -209,15 +209,15 @@ class GameService {
       newImgUrl = result.data
     }
 
-    const { image, name, description } = itemStore.existingItems[id]
-    const newItem: ItemDetails = {
+    const { image, name, description } = itemStore.existingItems[index]
+    const newItem: ItemInfo = {
       id: item.newId,
       name: item.newName ?? name,
       description: item.newDescription ?? description,
       image: newImgUrl ?? image,
     }
 
-    return { id, newItem }
+    return { index, newItem }
   }
 }
 
