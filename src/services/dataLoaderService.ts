@@ -60,7 +60,7 @@ class DataLoaderService {
 
       return { success: false, error: new Error('chain key is too long') }
     } catch (err) {
-      if (customErrorName.has(err.name)) console.error('[getStoryInfo]', err)
+      if (!customErrorName.has(err.name)) console.error('[getStoryInfo]', err)
       return { success: false, error: err }
     }
   }
@@ -70,7 +70,7 @@ class DataLoaderService {
       const img = await this.getData(key)
       return { success: true, data: img }
     } catch (err) {
-      if (customErrorName.has(err.name)) console.error('[getImage]:', err)
+      if (!customErrorName.has(err.name)) console.error('[getImage]:', err)
       if (err instanceof NotFoundError) {
         console.error('[getImage]:', err)
         return { success: false, error: new Error(`internal error: ${err.message}`) }
