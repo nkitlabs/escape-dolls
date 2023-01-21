@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { ItemDetails } from 'types/types'
+import { ItemInfo } from 'types/types'
 
 import { itemStore } from 'stores/itemStore'
 
@@ -11,7 +11,7 @@ import { SVGWrapper } from 'views/common/SVGWrapper'
 import { ItemCardWrapper, TickBox } from './components'
 
 type Props = {
-  item: ItemDetails
+  item: ItemInfo
   onClick?: () => void
 }
 export const ItemCard = observer(({ item, onClick }: Props) => {
@@ -20,11 +20,11 @@ export const ItemCard = observer(({ item, onClick }: Props) => {
   }
   const isTicked = useMemo(
     () => {
-      return itemStore.selectedItems.has(item.key)
+      return itemStore.selectedIds.has(item.id)
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [itemStore.selectedItems.size],
+    [itemStore.selectedIds.size],
   )
 
   return (

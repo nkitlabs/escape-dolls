@@ -29,7 +29,7 @@ export const SearchItem = observer(() => {
 
     if (!result.success) {
       if (result.error instanceof DuplicateStoryError) {
-        const readableName = gameStore.storyRecord[result.error.key].name
+        const readableName = gameStore.storyIdToInfo[result.error.id].name
         pushMessageSnackbar({ message: `He already searched ${readableName}`, messageType: 'info' })
       } else if (result.error instanceof SearchExistingItemError) {
         const readableName = result.error.itemName

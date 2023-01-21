@@ -6,18 +6,18 @@ export class NotFoundError extends Error {
 }
 
 export class DuplicateItemError extends Error {
-  constructor(key?: string) {
-    super(key ? `item ${key} is already in the list` : `item is already in the list`)
+  constructor(id?: string) {
+    super(id ? `item ${id} is already in the list` : `item is already in the list`)
     this.name = 'DuplicateItemError'
   }
 }
 
 export class DuplicateStoryError extends Error {
-  key: string
-  constructor(key: string) {
-    super(`story ${key} is already in the list`)
+  id: string
+  constructor(id: string) {
+    super(`story ${id} is already in the list`)
     this.name = 'DuplicateStoryError'
-    this.key = key ?? 'an undefined item'
+    this.id = id ?? 'an undefined story'
   }
 }
 
@@ -31,8 +31,8 @@ export class SearchExistingItemError extends Error {
 }
 
 export class StoryPenaltyError extends Error {
-  constructor(key: string, penalty: number) {
-    super(`incorrect action; story ${key} has a penalty ${penalty} second.`)
+  constructor(id: string, penalty: number) {
+    super(`incorrect action; story ${id} has a penalty ${penalty} second.`)
     this.name = 'StoryPenaltyError'
   }
 }
