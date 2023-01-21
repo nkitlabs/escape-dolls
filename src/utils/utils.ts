@@ -22,7 +22,7 @@ export const downloadData = (data: string, filename?: string): void => {
     link.download = filename ?? 'data.txt'
     blob = new Blob([base64ToBinary(data.replace(REGEX_METADATA_FILE_PREFIX, ''))])
   } else {
-    link.download = filename ?? 'encrpyted-data.txt'
+    link.download = filename ?? 'encrypted-data.txt'
     blob = new Blob([data])
   }
 
