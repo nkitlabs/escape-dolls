@@ -1,9 +1,9 @@
-import { Link, Stack, Typography } from '@mui/material'
+import { Link, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
 import { useBreakpoints } from 'hooks/useBreakpoints'
+import { useCustomSnackbar } from 'hooks/useCustomSnackbar'
 import { useGameSetup } from 'hooks/useGameSetup'
 
 import { gameService } from 'services/gameService'
@@ -24,7 +24,7 @@ export const LandingPage = observer(() => {
   const [playing, setPlaying] = useState(false)
   const [isEnded, setIsEnded] = useState(false)
   const { downSm } = useBreakpoints()
-  const { enqueueSnackbar } = useSnackbar()
+  const { pushMessageSnackbar } = useCustomSnackbar()
 
   const onEndGame = (_params: string[]) => {
     setIsEnded(true)
@@ -47,11 +47,7 @@ export const LandingPage = observer(() => {
       timerStore.resetTimer()
       setPlaying(true)
     } else {
-      enqueueSnackbar(`something went wrong, please contact admin`, {
-        variant: 'error',
-        autoHideDuration: 3000,
-        anchorOrigin: { vertical: 'top', horizontal: 'center' },
-      })
+      pushMessageSnackbar({ message: 'something went wrong, please contact admin' })
       console.error('[Landing Page]', result.error.message)
     }
   }
@@ -67,42 +63,20 @@ export const LandingPage = observer(() => {
 
   if (playing) return <CoreEscapeGame />
 
-  if (downSm) {
-    return (
-      <LandingWrapper>
-        <Stack justifyContent="center" alignItems="center" gap={3}>
-          <Typography variant="h4">Escape - Dolls</Typography>
-          <PlayButton variant="contained" size="large" onClick={onClickPlay} disabled={!isReady}>
-            Play
-          </PlayButton>
-          <Link
-            href={'https://www.buymeacoffee.com/kzstudiopr4'}
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{ display: 'contents' }}
-          >
-            <SupportUsTypography>Support Us</SupportUsTypography>
-          </Link>
-        </Stack>
-      </LandingWrapper>
-    )
-  }
   return (
     <LandingWrapper>
-      <Stack justifyContent="center" alignItems="center" gap={4}>
-        <Typography variant="h1">Escape - Dolls</Typography>
-        <PlayButton variant="contained" size="large" onClick={onClickPlay}>
-          Play
-        </PlayButton>
-        <Link
-          href={'https://www.buymeacoffee.com/kzstudiopr4'}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{ display: 'contents' }}
-        >
-          <SupportUsTypography>Support Us</SupportUsTypography>
-        </Link>
-      </Stack>
+      <Typography variant={downSm ? 'h4' : 'h1'}>Escape - Dolls</Typography>
+      <PlayButton variant="contained" size="large" onClick={onClickPlay} disabled={!isReady}>
+        Play
+      </PlayButton>
+      <Link
+        href={'https://www.buymeacoffee.com/kzstudiopr4'}
+        target="_blank"
+        rel="noopener noreferrer"
+        sx={{ display: 'contents' }}
+      >
+        <SupportUsTypography>Support Us</SupportUsTypography>
+      </Link>
     </LandingWrapper>
   )
 })

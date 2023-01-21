@@ -18,7 +18,7 @@ export const PlayButton = styled(Button)(({ theme }) => ({
   },
 }))
 
-export const LandingWrapper = styled(Stack)(() => ({
+export const LandingWrapper = styled(Stack)(({ theme }) => ({
   margin: 'auto',
   alignItems: 'center',
   position: 'relative',
@@ -31,6 +31,12 @@ export const LandingWrapper = styled(Stack)(() => ({
       opacity: 1,
     },
   },
+  justifyContent: 'center',
+  gap: theme.spacing(4),
+  [theme.breakpoints.down('sm')]: {
+    gap: theme.spacing(3),
+  },
+  // justifyContent="center" alignItems="center" gap={3}
 }))
 
 export const SupportUsTypography = styled(Typography)(({ theme }) => ({
