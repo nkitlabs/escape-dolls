@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-import { ItemDetails } from 'types/types'
+import { ItemInfo } from 'types/types'
 
 import { useBreakpoints } from 'hooks/useBreakpoints'
 
@@ -13,7 +13,7 @@ import { PreviousNextButtons } from 'views/common/PreviousNextButtons'
 import { Header, ModalWrapper } from './components'
 
 type NewItemModalProps = {
-  newItems: ItemDetails[]
+  newItems: ItemInfo[]
 }
 
 export const openNewItemModal = ({ newItems }: NewItemModalProps) => {

@@ -45,9 +45,9 @@ export const Item02Modal = observer(({ name, description, prefixKey }: Item02Mod
           pushErrorSnackbar({ error: result.error, penalty: result.penalty ?? 60 })
           return
         }
-        if (result.data.functionMapping) {
-          const { id, params } = result.data.functionMapping
-          gameStore.functionMapping[id](params)
+        if (result.data.triggerFunctionId) {
+          const { id, params } = result.data.triggerFunctionId
+          gameStore.functionIdMapping[id](params)
         }
       }
     return () => {
@@ -70,7 +70,7 @@ export const Item02Modal = observer(({ name, description, prefixKey }: Item02Mod
       <Stack width={160} bgcolor="primary.darken" py={2.5} px={1.5} borderRadius={4}>
         <Grid container spacing={1} justifyContent="center" alignItems="center">
           {PADS.split('').map((v) => (
-            <Grid item xs={12 / 3} p={0} key={`safepad-${v}`}>
+            <Grid item xs={12 / 3} p={0} key={`safe-pad-${v}`}>
               <SafePadding onClick={onClickPad(v)}>{v}</SafePadding>
             </Grid>
           ))}

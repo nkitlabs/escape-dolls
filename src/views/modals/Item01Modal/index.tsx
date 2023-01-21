@@ -24,7 +24,7 @@ export const openItem01Modal = (params: string[]) => {
 
 export const Item01Modal = observer(({ name, img, description }: Item01ModalProps) => {
   const { downSm } = useBreakpoints()
-  const imgUrl = gameStore.imgRecord[img]
+  const imgUrl = gameStore.imgIdToUrl[img]
 
   return (
     <ModalWrapper>
