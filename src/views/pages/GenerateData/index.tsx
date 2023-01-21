@@ -3,7 +3,8 @@ import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 import { useState } from 'react'
 
-import { StoryInfo } from 'types/types'
+import { IMG_FILENAMES_FILE, STORY_FILENAMES_FILE } from 'types/constants'
+import { EncryptedStoryInfo, StoryInfo } from 'types/types'
 
 import { encryptWithSalt, getHash, randomIv } from 'utils/cryptography'
 
@@ -34,58 +35,58 @@ export const getImageFile = async (filename: string): Promise<string> => {
 }
 
 const onClick = (salt: string) => async () => {
-  console.log('!!!', salt, process.env.KEY_SALT)
-  const storyFilenames = (await getTextFile(`data/draft/01-index-file-story.txt`)).split('\n')
+  const storyFilenames = (await getTextFile(STORY_FILENAMES_FILE)).split('\n')
 
-  const storyData = await Promise.all(
+  const storyData: EncryptedStoryInfo[] = await Promise.all(
     storyFilenames.map(async (filename) => {
       const data = await getTextFile(`${STORY_DATA_FOLDERS}/${filename}`)
       const obj = JSON.parse(data) as StoryInfo
-      const buffer = Buffer.from(data)
-      const key = obj.key
-      const hashedKey = getHash(key)
-      const hashedFilename = getHash(key + salt)
       const iv = randomIv(8)
-      const encryptedData = encryptWithSalt(buffer, hashedKey, iv).toString('base64')
-
-      return { key, hashedKey, hashedFilename, iv, encryptedData }
+      const hashedId = getHash(obj.id)
+      return {
+        id: obj.id,
+        hashedId: hashedId,
+        hashedFilename: getHash(obj.id + salt),
+        iv: iv,
+        encryptedData: encryptWithSalt(Buffer.from(data), hashedId, iv).toString('base64'),
+      }
     }),
   )
 
-  const imgFilenames = (await getTextFile(`data/draft/01-index-file-img.txt`)).split('\n')
+  const imgFilenames = (await getTextFile(IMG_FILENAMES_FILE)).split('\n')
 
-  const imgData = await Promise.all(
+  const imgData: EncryptedStoryInfo[] = await Promise.all(
     imgFilenames.map(async (filename) => {
       const data = await getImageFile(`${IMAGE_FOLDERS}/${filename}`)
-      const buffer = Buffer.from(data)
-      const key = filename.replace('.png', '') + '-img'
-      const hashedKey = getHash(key)
-      const hashedFilename = getHash(key + salt)
+      const id = filename.replace('.png', '') + '-img'
+      const hashedId = getHash(id)
       const iv = randomIv(8)
-      const encryptedData = encryptWithSalt(buffer, hashedKey, iv).toString('base64')
-
-      return { key, hashedKey, hashedFilename, iv, encryptedData }
+      return {
+        id: id,
+        hashedId: hashedId,
+        hashedFilename: getHash(id + salt),
+        iv: iv,
+        encryptedData: encryptWithSalt(Buffer.from(data), hashedId, iv).toString('base64'),
+      }
     }),
   )
 
   const storyMappingInfo = storyData.concat(imgData)
-  const storyMappingDev = storyMappingInfo.map(({ key, hashedKey, hashedFilename, iv }) => ({
-    key,
-    hashedKey,
+  const storyMappingDev = storyMappingInfo.map(({ id, hashedId, hashedFilename, iv }) => ({
+    id,
+    hashedId,
     hashedFilename,
     iv,
   }))
-  const storyMapping = storyMappingInfo.reduce((acc, v) => {
-    acc[v.hashedFilename] = v.iv
+  const storyMapping = storyMappingInfo.reduce((acc, storyInfo) => {
+    acc[storyInfo.hashedFilename] = storyInfo.iv
     return acc
   }, {})
 
   const zip = new JSZip()
   zip.file('story-mapping.json', JSON.stringify(storyMapping))
   zip.file('story-mapping-dev.json', JSON.stringify(storyMappingDev))
-  storyMappingInfo.forEach((v) => {
-    zip.file(`${v.hashedFilename}.txt`, v.encryptedData)
-  })
+  storyMappingInfo.map((storyInfo) => zip.file(`${storyInfo.hashedFilename}.txt`, storyInfo.encryptedData))
 
   const content = await zip.generateAsync({ type: 'blob' })
   saveAs(content, 'encrypted-game-data.zip')

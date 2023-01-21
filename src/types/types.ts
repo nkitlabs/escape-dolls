@@ -69,3 +69,11 @@ export type ItemInfo = {
   image?: string
   description?: string
 }
+
+export type EncryptedStoryInfo = {
+  id: string
+  hashedId: string
+  hashedFilename: string
+  iv: string
+  encryptedData: string
+}
