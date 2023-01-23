@@ -1,6 +1,6 @@
 import { Stack, styled } from '@mui/material'
 
-export const TutorialTextlWrapper = styled(Stack)(({ theme }) => ({
+export const TutorialTextWrapper = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
   gap: theme.spacing(3),
   borderRadius: 8,
